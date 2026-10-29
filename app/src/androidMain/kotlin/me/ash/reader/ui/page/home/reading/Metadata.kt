@@ -20,6 +20,7 @@ import me.ash.reader.infrastructure.preference.LocalReadingFonts
 import me.ash.reader.infrastructure.preference.LocalReadingTitleAlign
 import me.ash.reader.infrastructure.preference.LocalReadingTitleBold
 import me.ash.reader.infrastructure.preference.LocalReadingTitleUpperCase
+import me.ash.reader.infrastructure.preference.asFontFamily
 import me.ash.reader.ui.ext.formatAsString
 import me.ash.reader.ui.ext.requiresBidi
 import me.ash.reader.ui.theme.applyTextDirection

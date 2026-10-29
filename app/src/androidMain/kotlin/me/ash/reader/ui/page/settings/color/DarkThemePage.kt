@@ -18,6 +18,7 @@ import me.ash.reader.infrastructure.preference.DarkThemePreference
 import me.ash.reader.infrastructure.preference.LocalAmoledDarkTheme
 import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import me.ash.reader.infrastructure.preference.not
+import me.ash.reader.infrastructure.preference.toDesc
 import me.ash.reader.ui.component.base.*
 import me.ash.reader.ui.page.settings.SettingItem
 import me.ash.reader.ui.theme.palette.onLight

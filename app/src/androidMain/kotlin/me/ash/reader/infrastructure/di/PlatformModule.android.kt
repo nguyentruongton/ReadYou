@@ -77,87 +77,13 @@ actual val platformModule: Module = module {
     single<WorkManager> { WorkManager.getInstance(androidContext()) }
 
     singleOf(::AndroidStringsHelper)
+    single<me.ash.reader.infrastructure.platform.StringsHelper> { get<AndroidStringsHelper>() }
     single { NotificationHelper(androidContext(), get(named(IO_DISPATCHER)), get(named(APPLICATION_SCOPE))) }
+    single<me.ash.reader.infrastructure.platform.NotificationManager> { get<NotificationHelper>() }
     single { TextToSpeechManager(androidContext(), get(named(APPLICATION_SCOPE))) }
     single { AndroidImageDownloader(androidContext(), get(named(IO_DISPATCHER)), get()) }
-    single { SettingsProvider(androidContext(), get(named(APPLICATION_SCOPE)), get(named(IO_DISPATCHER))) }
-    single { OPMLDataSource(androidContext(), get(named(IO_DISPATCHER))) }
-    single { RssHelper(androidContext(), get(named(IO_DISPATCHER)), get()) }
-    single { ReaderCacheHelper(androidContext(), get(named(IO_DISPATCHER)), get(), get()) }
-    single { SyncLogger(androidContext(), get(named(APPLICATION_SCOPE))) }
-    single { AccountService(androidContext(), get(), get(), get(), get(), get(named(APPLICATION_SCOPE)), get()) }
-    single {
-        LocalRssService(
-            androidContext(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(named(IO_DISPATCHER)),
-            get(named(DEFAULT_DISPATCHER)),
-            get(),
-            get(),
-            get(),
-        )
-    }
-    single {
-        FeverRssService(
-            androidContext(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(named(IO_DISPATCHER)),
-            get(named(MAIN_DISPATCHER)),
-            get(named(DEFAULT_DISPATCHER)),
-            get(),
-            get(),
-        )
-    }
-    single {
-        GoogleReaderRssService(
-            androidContext(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(named(IO_DISPATCHER)),
-            get(named(MAIN_DISPATCHER)),
-            get(named(DEFAULT_DISPATCHER)),
-            get(),
-            get(),
-            get(),
-        )
-    }
-    single { OpmlService(androidContext(), get(), get(), get(), get(), get(), get(named(IO_DISPATCHER))) }
-    single { AppService(androidContext(), get(), get(named(IO_DISPATCHER)), get(named(MAIN_DISPATCHER))) }
-    single { RssService(get(named(APPLICATION_SCOPE)), get(), get(), get(), get()) }
-    single { DiffMapHolder(androidContext(), get(named(APPLICATION_SCOPE)), get(named(IO_DISPATCHER)), get(), get()) }
-    single { FilterStateUseCase(get(), get(), get(), get(named(APPLICATION_SCOPE))) }
-    single {
-        GroupWithFeedsListUseCase(
-            get(named(APPLICATION_SCOPE)),
-            get(named(IO_DISPATCHER)),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-        )
-    }
-    single {
-        ArticlePagingListUseCase(
-            get(),
-            get(),
-            get(named(APPLICATION_SCOPE)),
-            get(named(IO_DISPATCHER)),
-            get(),
-            get(),
-            get(),
-        )
+    single<me.ash.reader.infrastructure.platform.SyncScheduler> {
+        me.ash.reader.infrastructure.platform.AndroidSyncScheduler(get())
     }
     single { WidgetRepository(androidContext(), get(named(APPLICATION_SCOPE)), get(), get(), get(), get()) }
 

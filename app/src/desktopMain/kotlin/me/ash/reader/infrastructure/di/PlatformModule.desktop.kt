@@ -25,4 +25,15 @@ actual val platformModule: Module = module {
     single<ImageLoader> {
         ImageLoaderFactory.create(PlatformContext.INSTANCE, get(), get<AppPaths>().cacheDir)
     }
+    single<me.ash.reader.infrastructure.platform.SyncScheduler> {
+        me.ash.reader.infrastructure.platform.DesktopSyncScheduler(get(org.koin.core.qualifier.named(APPLICATION_SCOPE)))
+    }
+    single<me.ash.reader.infrastructure.platform.StringsHelper> {
+        me.ash.reader.infrastructure.platform.CommonStringsHelper()
+    }
+    single<me.ash.reader.infrastructure.platform.NotificationManager> {
+        object : me.ash.reader.infrastructure.platform.NotificationManager {
+            override fun notify(feedWithArticle: me.ash.reader.domain.model.feed.FeedWithArticle) {}
+        }
+    }
 }

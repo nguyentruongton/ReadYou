@@ -21,30 +21,35 @@ class SyncWorker(
         val feedId = data.getString("feedId")
         val groupId = data.getString("groupId")
 
-        return rssService
+        val syncResult = rssService
             .get()
             .sync(accountId = accountId, feedId = feedId, groupId = groupId)
-            .also {
-                rssService.get().clearKeepArchivedArticles().forEach {
-                    readerCacheHelper.deleteCacheFor(articleId = it.id)
-                }
-                workManager
-                    .beginUniqueWork(
-                        uniqueWorkName = POST_SYNC_WORK_NAME,
-                        existingWorkPolicy = ExistingWorkPolicy.KEEP,
-                        OneTimeWorkRequestBuilder<ReaderWorker>()
-                            .addTag(READER_TAG)
-                            .addTag(ONETIME_WORK_TAG)
-                            .setBackoffCriteria(
-                                backoffPolicy = BackoffPolicy.EXPONENTIAL,
-                                backoffDelay = 30,
-                                timeUnit = TimeUnit.SECONDS,
-                            )
-                            .build(),
+
+        rssService.get().clearKeepArchivedArticles().forEach {
+            readerCacheHelper.deleteCacheFor(articleId = it.id)
+        }
+        workManager
+            .beginUniqueWork(
+                uniqueWorkName = POST_SYNC_WORK_NAME,
+                existingWorkPolicy = ExistingWorkPolicy.KEEP,
+                OneTimeWorkRequestBuilder<ReaderWorker>()
+                    .addTag(READER_TAG)
+                    .addTag(ONETIME_WORK_TAG)
+                    .setBackoffCriteria(
+                        backoffPolicy = BackoffPolicy.EXPONENTIAL,
+                        backoffDelay = 30,
+                        timeUnit = TimeUnit.SECONDS,
                     )
-                    .then(OneTimeWorkRequestBuilder<WidgetUpdateWorker>().build())
-                    .enqueue()
-            }
+                    .build(),
+            )
+            .then(OneTimeWorkRequestBuilder<WidgetUpdateWorker>().build())
+            .enqueue()
+
+        return when (syncResult) {
+            SyncResult.Success -> Result.success()
+            SyncResult.Failure -> Result.failure()
+            SyncResult.Retry -> Result.retry()
+        }
     }
 
     companion object {

@@ -28,7 +28,7 @@ class NotificationHelper(
     private val context: Context,
     private val ioDispatcher: CoroutineDispatcher,
     private val coroutineScope: CoroutineScope,
-) {
+) : me.ash.reader.infrastructure.platform.NotificationManager {
 
     private val notificationManager: NotificationManagerCompat =
         NotificationManagerCompat.from(context).apply {
@@ -101,7 +101,7 @@ class NotificationHelper(
         }
     }
 
-    fun notify(feedWithArticle: FeedWithArticle) {
+    override fun notify(feedWithArticle: FeedWithArticle) {
         notify(feedWithArticle.feed, feedWithArticle.articles)
     }
 }
