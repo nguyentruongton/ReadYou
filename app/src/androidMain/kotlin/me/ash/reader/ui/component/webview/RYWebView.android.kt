@@ -35,11 +35,11 @@ import me.ash.reader.ui.ext.surfaceColorAtElevation
 import me.ash.reader.ui.theme.palette.alwaysLight
 
 @Composable
-fun RYWebView(
-    modifier: Modifier = Modifier,
+actual fun RYWebView(
+    modifier: Modifier,
     content: String,
-    refererDomain: String? = null,
-    onImageClick: ((imgUrl: String, altText: String) -> Unit)? = null,
+    refererDomain: String?,
+    onImageClick: ((imgUrl: String, altText: String) -> Unit)?,
 ) {
     val context = LocalContext.current
     val maxWidth = LocalConfiguration.current.screenWidthDp.dp.value

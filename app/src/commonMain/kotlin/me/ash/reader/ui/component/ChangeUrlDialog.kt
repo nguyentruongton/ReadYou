@@ -6,12 +6,12 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.res.stringResource
-import me.ash.reader.R
+import me.ash.reader.*
 import me.ash.reader.ui.component.base.TextFieldDialog
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun RenameDialog(
+fun ChangeUrlDialog(
     visible: Boolean = false,
     value: String = "",
     onValueChange: (String) -> Unit = {},
@@ -25,9 +25,9 @@ fun RenameDialog(
         }
         TextFieldDialog(
             textFieldState = textFieldState,
-            title = stringResource(R.string.rename),
+            title = stringResource(Res.string.change_url),
             icon = Icons.Outlined.Edit,
-            placeholder = stringResource(R.string.name),
+            placeholder = stringResource(Res.string.feed_url_placeholder),
             onDismissRequest = onDismissRequest,
             onConfirm = onConfirm,
         )

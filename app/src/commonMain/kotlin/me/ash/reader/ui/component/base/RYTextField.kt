@@ -37,13 +37,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalClipboard
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.input.ImeAction
-import androidx.room.util.copy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.ash.reader.R
+import me.ash.reader.*
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Deprecated("Use overloads with text field state instead")
@@ -315,15 +314,15 @@ private fun PasteButton(
     modifier: Modifier = Modifier,
     tint: Color = LocalContentColor.current,
 ) {
-    val clipboardManager = LocalClipboard.current
+    val clipboardManager = LocalClipboardManager.current
     val scope = rememberCoroutineScope()
 
     IconButton(
         onClick = {
             scope.launch {
-                val clipboardText = clipboardManager.getClipEntry()?.clipData?.getItemAt(0)?.text
+                val clipboardText = clipboardManager.getText()?.text
                 if (!clipboardText.isNullOrBlank()) {
-                    state.setTextAndPlaceCursorAtEnd(clipboardText.toString())
+                    state.setTextAndPlaceCursorAtEnd(clipboardText)
                 }
             }
         },
@@ -331,7 +330,7 @@ private fun PasteButton(
     ) {
         Icon(
             imageVector = Icons.Rounded.ContentPaste,
-            contentDescription = stringResource(R.string.paste),
+            contentDescription = stringResource(Res.string.paste),
             tint = tint,
         )
     }
@@ -346,7 +345,7 @@ fun ClearButton(
     IconButton(onClick = { state.clearText() }, modifier = modifier) {
         Icon(
             imageVector = Icons.Rounded.Close,
-            contentDescription = stringResource(R.string.clear),
+            contentDescription = stringResource(Res.string.clear),
             tint = tint,
         )
     }

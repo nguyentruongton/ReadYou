@@ -20,7 +20,6 @@
 
 package me.ash.reader.ui.component.reader
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -39,7 +38,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -51,10 +49,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import java.io.InputStream
-import me.ash.reader.R
+import me.ash.reader.*
 import me.ash.reader.infrastructure.preference.LocalReadingImageMaximize
 import me.ash.reader.ui.ext.requiresBidi
 import me.ash.reader.ui.theme.applyTextDirection
+import org.jetbrains.compose.resources.stringResource
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
@@ -64,7 +63,7 @@ fun LazyListScope.htmlFormattedText(
     inputStream: InputStream,
     subheadUpperCase: Boolean = false,
     baseUrl: String,
-    @DrawableRes imagePlaceholder: Int,
+    imagePlaceholder: Any? = null,
     onImageClick: ((imgUrl: String, altText: String) -> Unit)? = null,
     onLinkClick: (String) -> Unit,
 ) {
@@ -84,7 +83,7 @@ fun LazyListScope.htmlFormattedText(
 private fun LazyListScope.formatBody(
     element: Element,
     subheadUpperCase: Boolean = false,
-    @DrawableRes imagePlaceholder: Int,
+    imagePlaceholder: Any? = null,
     onImageClick: ((imgUrl: String, altText: String) -> Unit)? = null,
     onLinkClick: (String) -> Unit,
     baseUrl: String,
@@ -136,7 +135,7 @@ private fun LazyListScope.formatBody(
 
 private fun LazyListScope.formatCodeBlock(
     element: Element,
-    @DrawableRes imagePlaceholder: Int,
+    imagePlaceholder: Any? = null,
     onImageClick: ((imgUrl: String, altText: String) -> Unit)?,
     onLinkClick: (String) -> Unit,
     baseUrl: String,
@@ -186,7 +185,7 @@ private fun TextComposer.appendTextChildren(
     preFormatted: Boolean = false,
     subheadUpperCase: Boolean = false,
     lazyListScope: LazyListScope,
-    @DrawableRes imagePlaceholder: Int,
+    imagePlaceholder: Any? = null,
     onImageClick: ((imgUrl: String, altText: String) -> Unit)?,
     onLinkClick: (String) -> Unit,
     baseUrl: String,
@@ -648,7 +647,7 @@ private fun TextComposer.appendTextChildren(
                                                     onClick = { onLinkClick(video.link) },
                                                     contentDescription =
                                                         stringResource(
-                                                            R.string.touch_to_play_video
+                                                            Res.string.touch_to_play_video
                                                         ),
                                                     fillMaxWidth = true,
                                                     contentPadding =
@@ -734,7 +733,7 @@ private fun testIt() {
             htmlFormattedText(
                 inputStream = stream,
                 baseUrl = "https://cowboyprogrammer.org",
-                imagePlaceholder = R.drawable.ic_telegram,
+                imagePlaceholder = null,
                 onLinkClick = {},
             )
         }

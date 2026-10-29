@@ -33,10 +33,9 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.ash.reader.ui.component.base.LocalInteractionSources
 import me.ash.reader.ui.theme.palette.LocalTonalPalettes
 import me.ash.reader.ui.theme.palette.onDark
-
-val LocalInteractionSources = compositionLocalOf<MutableInteractionSource?> { null }
 
 @Composable
 fun SettingItem(

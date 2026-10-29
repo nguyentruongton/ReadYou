@@ -1,6 +1,5 @@
 package me.ash.reader.ui.component.base
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
@@ -18,8 +17,6 @@ import coil3.network.NetworkHeaders
 import coil3.network.httpHeaders
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import coil3.request.error
-import coil3.request.placeholder
 import coil3.size.Precision
 import coil3.size.Scale
 import coil3.size.Size
@@ -36,23 +33,21 @@ fun RYAsyncImage(
     precision: Precision = Precision.EXACT,
     contentScale: ContentScale = ContentScale.Fit,
     contentDescription: String? = null,
-    @DrawableRes placeholder: Int? = null,
-    @DrawableRes error: Int? = null,
+    placeholder: Any? = null,
+    error: Any? = null,
 ) {
     val painter =
         rememberAsyncImagePainter(
             model =
                 ImageRequest.Builder(LocalPlatformContext.current)
                     .apply {
-                        val domain = data.toString().extractDomain()
+                        val domain = data?.toString()?.extractDomain()
                         if (domain != null) {
                             httpHeaders(NetworkHeaders.Builder().set("Referer", domain).build())
                         }
                     }
                     .data(data = data)
                     .apply {
-                        if (placeholder != null) placeholder(placeholder)
-                        if (error != null) error(error)
                         crossfade(true)
                         scale(scale)
                         precision(precision)
@@ -66,38 +61,7 @@ fun RYAsyncImage(
         contentScale = contentScale,
         modifier = modifier.background(MaterialTheme.colorScheme.surfaceContainer),
     )
-
-    //    coil.compose.AsyncImage(
-    //        modifier = modifier,
-    //        model = ImageRequest
-    //            .Builder(LocalContext.current)
-    //            .data(data)
-    //            .crossfade(true)
-    //            .scale(scale)
-    //            .precision(precision)
-    //            .size(size)
-    //            .build(),
-    //        contentDescription = contentDescription,
-    //        contentScale = contentScale,
-    //        imageLoader = LocalImageLoader.current,
-    //        placeholder = placeholder?.run {
-    //            forwardingPainter(
-    //                painter = painterResource(this),
-    //                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-    //                alpha = 0.1f,
-    //            )
-    //        },
-    //        error = error?.run {
-    //            forwardingPainter(
-    //                painter = painterResource(this),
-    //                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-    //                alpha = 0.1f,
-    //            )
-    //        },
-    //    )
 }
-
-// From: https://gist.github.com/colinrtwhite/c2966e0b8584b4cdf0a5b05786b20ae1
 
 /**
  * Create and return a new [Painter] that wraps [painter] with its [alpha], [colorFilter], or

@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.DialogProperties
-import me.ash.reader.R
+import me.ash.reader.*
+import org.jetbrains.compose.resources.stringResource
 
 @Deprecated("Use overload with TextFieldState instead")
 @Composable
@@ -35,8 +35,8 @@ fun TextFieldDialog(
     placeholder: String = "",
     isPassword: Boolean = false,
     errorText: String = "",
-    dismissText: String = stringResource(R.string.cancel),
-    confirmText: String = stringResource(R.string.confirm),
+    dismissText: String = stringResource(Res.string.cancel),
+    confirmText: String = stringResource(Res.string.confirm),
     onValueChange: (String) -> Unit = {},
     onDismissRequest: () -> Unit = {},
     onConfirm: (String) -> Unit = {},
@@ -105,8 +105,8 @@ fun TextFieldDialog(
     placeholder: String = "",
     isPassword: Boolean = false,
     errorText: String = "",
-    dismissText: String = stringResource(R.string.cancel),
-    confirmText: String = stringResource(R.string.confirm),
+    dismissText: String = stringResource(Res.string.cancel),
+    confirmText: String = stringResource(Res.string.confirm),
     onDismissRequest: () -> Unit = {},
     onConfirm: (String) -> Unit = {},
     imeAction: ImeAction = if (singleLine) ImeAction.Done else ImeAction.Default,
@@ -168,8 +168,8 @@ fun TextFieldDialog(
     placeholder: String = "",
     isPassword: Boolean = false,
     errorText: String = "",
-    dismissText: String = stringResource(R.string.cancel),
-    confirmText: String = stringResource(R.string.confirm),
+    dismissText: String = stringResource(Res.string.cancel),
+    confirmText: String = stringResource(Res.string.confirm),
     onDismissRequest: () -> Unit = {},
     onConfirm: (String) -> Unit = {},
     imeAction: ImeAction = if (singleLine) ImeAction.Done else ImeAction.Default,

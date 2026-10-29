@@ -8,6 +8,7 @@
 
 package me.ash.reader.ui.component.base
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
@@ -15,8 +16,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
-import me.ash.reader.ui.page.settings.LocalInteractionSources
+
+val LocalInteractionSources = compositionLocalOf<MutableInteractionSource?> { null }
 
 @Composable
 fun RYSwitch(
@@ -34,7 +37,6 @@ fun RYSwitch(
         interactionSource = LocalInteractionSources.current
     )
 }
-
 
 @Composable
 fun SwitchThumbIcon(checked: Boolean, modifier: Modifier = Modifier) {

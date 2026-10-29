@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.ash.reader.infrastructure.preference.LocalReadingImageHorizontalPadding
@@ -34,7 +33,6 @@ fun ReadingThemePrev(
     theme: ReadingThemePreference = ReadingThemePreference.MaterialYou,
     onClick: () -> Unit = {},
 ) {
-    val context = LocalContext.current
     val imageRoundedCorners = LocalReadingImageRoundedCorners.current
     val roundedCorners by remember { mutableStateOf(RoundedCornerShape((imageRoundedCorners / 2).dp)) }
 
@@ -62,7 +60,7 @@ fun ReadingThemePrev(
         // Header
         Text(
             modifier = Modifier.padding(horizontal = 12.dp),
-            text = theme.toDesc(context),
+            text = theme.toDesc(),
             style = MaterialTheme.typography.titleSmall,
         )
         Spacer(modifier = Modifier.height(2.dp))

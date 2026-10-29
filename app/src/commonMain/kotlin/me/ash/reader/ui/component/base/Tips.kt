@@ -8,10 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import me.ash.reader.R
+import me.ash.reader.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun Tips(
@@ -25,7 +25,7 @@ fun Tips(
     ) {
         Icon(
             imageVector = Icons.Outlined.Info,
-            contentDescription = stringResource(R.string.tips_and_support),
+            contentDescription = stringResource(Res.string.tips_and_support),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(16.dp))
