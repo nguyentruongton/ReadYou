@@ -40,16 +40,6 @@ class RssHelper(
     private val okHttpClient: OkHttpClient,
 ) {
 
-    constructor(
-        context: Any?,
-        ioDispatcher: CoroutineDispatcher,
-        okHttpClient: OkHttpClient,
-    ) : this(
-        org.koin.core.context.GlobalContext.get().get(),
-        ioDispatcher,
-        okHttpClient,
-    )
-
     data class SearchFeedResult(
         val feed: SyndFeed,
         val feedLink: String,

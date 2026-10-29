@@ -1,7 +1,7 @@
 package me.ash.reader.infrastructure.rss
 
-import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
+import me.ash.reader.domain.service.AccountService
 import okhttp3.OkHttpClient
 import org.junit.Assert
 import org.junit.Before
@@ -42,7 +42,7 @@ internal const val imageHtmlCase2: String = """
 class RssHelperTest {
 
     @Mock
-    private lateinit var mockContext: Context
+    private lateinit var mockAccountService: AccountService
 
     @Mock
     private lateinit var mockIODispatcher: CoroutineDispatcher
@@ -54,10 +54,10 @@ class RssHelperTest {
 
     @Before
     fun setUp() {
-        mockContext = mock<Context> { }
+        mockAccountService = mock<AccountService> {}
         mockIODispatcher = mock<CoroutineDispatcher> {}
         mockOkHttpClient = mock<OkHttpClient> {}
-        rssHelper = RssHelper(mockContext, mockIODispatcher, mockOkHttpClient)
+        rssHelper = RssHelper(mockAccountService, mockIODispatcher, mockOkHttpClient)
     }
 
     @Test
