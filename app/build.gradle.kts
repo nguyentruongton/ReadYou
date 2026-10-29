@@ -166,6 +166,7 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation("org.jetbrains.compose.material3:material3-desktop:1.12.0-alpha03")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.1")
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
             }
@@ -174,6 +175,7 @@ kotlin {
         val desktopTest by getting {
             dependencies {
                 implementation(libs.junit)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
             }
         }
     }
