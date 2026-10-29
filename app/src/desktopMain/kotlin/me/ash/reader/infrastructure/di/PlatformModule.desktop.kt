@@ -36,4 +36,10 @@ actual val platformModule: Module = module {
             override fun notify(feedWithArticle: me.ash.reader.domain.model.feed.FeedWithArticle) {}
         }
     }
+    single<me.ash.reader.infrastructure.platform.ImageDownloader> {
+        me.ash.reader.infrastructure.platform.DesktopImageDownloader(get(org.koin.core.qualifier.named(IO_DISPATCHER)), get(), get())
+    }
+    single<me.ash.reader.infrastructure.platform.TextToSpeechManager> {
+        me.ash.reader.infrastructure.platform.DesktopTextToSpeechManager()
+    }
 }

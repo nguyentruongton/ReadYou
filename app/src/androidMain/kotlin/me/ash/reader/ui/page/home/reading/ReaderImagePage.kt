@@ -35,7 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -46,7 +46,7 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.network.NetworkHeaders
 import coil3.network.httpHeaders
 import coil3.request.ImageRequest
-import me.ash.reader.R
+import me.ash.reader.*
 import me.ash.reader.ui.ext.extractDomain
 import me.ash.reader.ui.ext.showToast
 import me.saket.telephoto.zoomable.ZoomSpec
@@ -54,14 +54,14 @@ import me.saket.telephoto.zoomable.ZoomableContentLocation
 import me.saket.telephoto.zoomable.rememberZoomableState
 import me.saket.telephoto.zoomable.zoomable
 
-data class ImageData(val imageUrl: String = "", val altText: String = "")
-
 @Composable
-fun ReaderImageViewer(
+actual fun ReaderImageViewer(
     imageData: ImageData,
     onDownloadImage: (String) -> Unit,
-    onDismissRequest: () -> Unit = {},
+    onDismissRequest: () -> Unit,
 ) {
+    val permissionDeniedToast = stringResource(Res.string.permission_denied)
+    val context = LocalContext.current
     Dialog(
         onDismissRequest = onDismissRequest,
         properties =
@@ -69,7 +69,6 @@ fun ReaderImageViewer(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             val view = LocalView.current
-            val context = LocalContext.current
 
             val dialogWindowProvider = view.parent as? DialogWindowProvider
             dialogWindowProvider?.window?.setDimAmount(1f)
@@ -119,7 +118,7 @@ fun ReaderImageViewer(
                         if (result) {
                             onDownloadImage(imageData.imageUrl)
                         } else {
-                            context.showToast(context.getString(R.string.permission_denied))
+                            showToast(permissionDeniedToast)
                         }
                     },
                 )
@@ -142,7 +141,7 @@ fun ReaderImageViewer(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Close,
-                        contentDescription = stringResource(id = R.string.close),
+                        contentDescription = stringResource(Res.string.close),
                     )
                 }
 
@@ -151,7 +150,7 @@ fun ReaderImageViewer(
                 Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
                     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                         DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.save)) },
+                            text = { Text(text = stringResource(Res.string.save)) },
                             onClick = {
                                 val isStoragePermissionGranted =
                                     ContextCompat.checkSelfPermission(
@@ -179,7 +178,7 @@ fun ReaderImageViewer(
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.MoreHoriz,
-                            contentDescription = stringResource(id = R.string.more),
+                            contentDescription = stringResource(Res.string.more),
                         )
                     }
                 }

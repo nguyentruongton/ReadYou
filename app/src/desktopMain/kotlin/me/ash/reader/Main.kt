@@ -1,28 +1,28 @@
 package me.ash.reader
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import me.ash.reader.domain.repository.AccountDao
+import androidx.compose.ui.window.rememberWindowState
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.savedstate.serialization.SavedStateConfiguration
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
+import me.ash.reader.domain.service.AccountService
 import me.ash.reader.infrastructure.di.commonModule
 import me.ash.reader.infrastructure.di.platformModule
-import me.ash.reader.infrastructure.platform.AppPaths
+import me.ash.reader.infrastructure.preference.AccountSettingsProvider
+import me.ash.reader.infrastructure.preference.LocalDarkTheme
+import me.ash.reader.infrastructure.preference.SettingsProvider
+import me.ash.reader.ui.page.nav3.AppEntry
+import me.ash.reader.ui.page.nav3.key.Route
+import me.ash.reader.ui.theme.AppTheme
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 
+@OptIn(coil3.annotation.DelicateCoilApi::class)
 fun main() = application {
     if (GlobalContext.getOrNull() == null) {
         startKoin {
@@ -30,34 +30,26 @@ fun main() = application {
         }
     }
 
+    val koin = GlobalContext.get()
+    val imageLoader = koin.get<ImageLoader>()
+    SingletonImageLoader.setUnsafe(imageLoader)
+
+    val settingsProvider = koin.get<SettingsProvider>()
+    val accountService = koin.get<AccountService>()
+
+    val windowState = rememberWindowState(size = DpSize(1200.dp, 800.dp))
+
     Window(
         onCloseRequest = ::exitApplication,
-        title = "ReadYou Desktop",
+        state = windowState,
+        title = "ReadYou",
     ) {
-        MaterialTheme {
-            val appPaths = GlobalContext.get().get<AppPaths>()
-            val accountDao = GlobalContext.get().get<AccountDao>()
-            val accounts by accountDao.queryAllAsFlow().collectAsState(initial = emptyList())
-
-            Column(
-                modifier = Modifier.fillMaxSize().padding(24.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = "ReadYou Compose Multiplatform",
-                    style = MaterialTheme.typography.headlineMedium,
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Data directory: ${appPaths.dataDir.absolutePath}",
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Accounts connected: ${accounts.size}",
-                    style = MaterialTheme.typography.bodyLarge,
-                )
+        AccountSettingsProvider(accountService = accountService) {
+            settingsProvider.ProvidesSettings {
+                AppTheme(useDarkTheme = LocalDarkTheme.current.isDarkTheme()) {
+                    val backStack = rememberNavBackStack(SavedStateConfiguration.DEFAULT, Route.Feeds as NavKey)
+                    AppEntry(backStack = backStack)
+                }
             }
         }
     }

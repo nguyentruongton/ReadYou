@@ -25,7 +25,7 @@ import me.ash.reader.ui.ext.openURL
 import me.ash.reader.ui.theme.palette.onLight
 
 @Composable
-fun LicenseListPage(
+actual fun LicenseListPage(
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current

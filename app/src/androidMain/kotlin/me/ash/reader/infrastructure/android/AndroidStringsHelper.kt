@@ -14,6 +14,12 @@ class AndroidStringsHelper(
     override suspend fun get(res: StringResource, vararg formatArgs: Any): String =
         getString(res, *formatArgs)
 
+    override suspend fun getQuantity(
+        res: org.jetbrains.compose.resources.PluralStringResource,
+        quantity: Int,
+        vararg formatArgs: Any,
+    ): String = org.jetbrains.compose.resources.getPluralString(res, quantity, *formatArgs)
+
     fun getString(resId: Int, vararg formatArgs: Any): String = context.getString(resId, *formatArgs)
 
     fun getQuantityString(resId: Int, quantity: Int, vararg formatArgs: Any): String =

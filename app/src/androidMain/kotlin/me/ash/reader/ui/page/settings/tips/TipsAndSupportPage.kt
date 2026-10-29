@@ -91,11 +91,11 @@ private val ShapeGacha by lazy {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun TipsAndSupportPage(
-    updateViewModel: UpdateViewModel = koinViewModel(),
+actual fun TipsAndSupportPage(
     onBack: () -> Unit,
     navigateToLicenseList: () -> Unit,
 ) {
+    val updateViewModel: UpdateViewModel = koinViewModel()
     val context = LocalContext.current
     val view = LocalView.current
     val scope = rememberCoroutineScope()

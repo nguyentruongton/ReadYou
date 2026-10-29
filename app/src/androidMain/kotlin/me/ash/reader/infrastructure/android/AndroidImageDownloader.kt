@@ -22,13 +22,15 @@ import kotlin.io.path.Path
 import kotlin.io.path.createFile
 import kotlin.io.path.createParentDirectories
 
+import me.ash.reader.infrastructure.platform.ImageDownloader
+
 class AndroidImageDownloader(
     private val context: Context,
     private val ioDispatcher: CoroutineDispatcher,
     private val okHttpClient: OkHttpClient,
-) {
+) : ImageDownloader {
     @CheckResult
-    suspend fun downloadImage(imageUrl: String): Result<Uri> {
+    suspend fun downloadImageUri(imageUrl: String): Result<Uri> {
         return withContext(ioDispatcher) {
             Request.Builder().url(imageUrl).build().runCatching {
                 okHttpClient.newCall(this).execute().run {
@@ -106,4 +108,7 @@ class AndroidImageDownloader(
 
         return contentUri
     }
+
+    override suspend fun downloadImage(imageUrl: String): Result<String> =
+        downloadImageUri(imageUrl).map { it.toString() }
 }

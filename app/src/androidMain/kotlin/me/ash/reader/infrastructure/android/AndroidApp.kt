@@ -48,8 +48,14 @@ class AndroidApp : Application(), Configuration.Provider, KoinComponent {
      * 4. Synchronize once
      * 5. Check for new version
      */
+    companion object {
+        lateinit var instance: AndroidApp
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
         startKoin {
             if (BuildConfig.DEBUG) {
                 androidLogger()

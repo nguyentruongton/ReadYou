@@ -39,8 +39,8 @@ import me.ash.reader.ui.ext.installLatestApk
 import me.ash.reader.ui.ext.openURL
 
 @Composable
-fun UpdateDialog(
-    updateViewModel: UpdateViewModel = koinViewModel(),
+actual fun UpdateDialog(
+    updateViewModel: UpdateViewModel,
 ) {
     val context = LocalContext.current
     val updateUiState = updateViewModel.updateUiState.collectAsStateValue()

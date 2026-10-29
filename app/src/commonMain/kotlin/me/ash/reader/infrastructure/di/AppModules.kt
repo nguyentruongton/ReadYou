@@ -29,7 +29,17 @@ import me.ash.reader.infrastructure.preference.SettingsProvider
 import me.ash.reader.infrastructure.rss.OPMLDataSource
 import me.ash.reader.infrastructure.rss.ReaderCacheHelper
 import me.ash.reader.infrastructure.rss.RssHelper
+import me.ash.reader.ui.page.adaptive.ArticleListReaderViewModel
+import me.ash.reader.ui.page.home.feeds.FeedsViewModel
+import me.ash.reader.ui.page.home.feeds.drawer.feed.FeedOptionViewModel
+import me.ash.reader.ui.page.home.feeds.drawer.group.GroupOptionViewModel
+import me.ash.reader.ui.page.home.feeds.subscribe.SubscribeViewModel
+import me.ash.reader.ui.page.settings.accounts.AccountViewModel
+import me.ash.reader.ui.page.settings.accounts.addition.AdditionViewModel
+import me.ash.reader.ui.page.settings.tips.UpdateViewModel
+import me.ash.reader.ui.page.settings.troubleshooting.TroubleshootingViewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -129,4 +139,73 @@ val commonModule = module {
             get(),
         )
     }
+    viewModel {
+        FeedsViewModel(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(named(DEFAULT_DISPATCHER)),
+            get(named(IO_DISPATCHER)),
+            get(named(APPLICATION_SCOPE)),
+            get(),
+            get(),
+            get(),
+            get(),
+        )
+    }
+    viewModel { SubscribeViewModel(get(), get(), get(), get(), get(named(APPLICATION_SCOPE)), get()) }
+    viewModel {
+        AccountViewModel(
+            get(),
+            get(),
+            get(),
+            get(named(IO_DISPATCHER)),
+            get(named(DEFAULT_DISPATCHER)),
+            get(named(MAIN_DISPATCHER)),
+            get(named(APPLICATION_SCOPE)),
+        )
+    }
+    viewModel { AdditionViewModel(get(), get(), get(), get()) }
+    viewModel {
+        FeedOptionViewModel(
+            get(),
+            get(named(MAIN_DISPATCHER)),
+            get(named(IO_DISPATCHER)),
+            get(named(APPLICATION_SCOPE)),
+            get(),
+            get(),
+        )
+    }
+    viewModel { GroupOptionViewModel(get(), get(named(MAIN_DISPATCHER)), get(named(IO_DISPATCHER)), get(named(APPLICATION_SCOPE))) }
+    viewModel {
+        ArticleListReaderViewModel(
+            get(),
+            get(named(IO_DISPATCHER)),
+            get(named(APPLICATION_SCOPE)),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+        )
+    }
+    viewModel {
+        TroubleshootingViewModel(
+            get(),
+            get(),
+            get(),
+            get(named(IO_DISPATCHER)),
+            get(named(DEFAULT_DISPATCHER)),
+            get(named(MAIN_DISPATCHER)),
+            get(named(APPLICATION_SCOPE)),
+            get(),
+            get(),
+        )
+    }
+    viewModel { UpdateViewModel(get()) }
 }

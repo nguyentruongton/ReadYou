@@ -4,19 +4,7 @@ import androidx.work.WorkManager
 import coil3.ImageLoader
 import me.ash.reader.infrastructure.image.ImageLoaderFactory
 import me.ash.reader.BuildConfig
-import me.ash.reader.domain.data.ArticlePagingListUseCase
-import me.ash.reader.domain.data.DiffMapHolder
-import me.ash.reader.domain.data.FilterStateUseCase
-import me.ash.reader.domain.data.GroupWithFeedsListUseCase
-import me.ash.reader.domain.data.SyncLogger
-import me.ash.reader.domain.service.AccountService
-import me.ash.reader.domain.service.AppService
-import me.ash.reader.domain.service.FeverRssService
-import me.ash.reader.domain.service.GoogleReaderRssService
-import me.ash.reader.domain.service.LocalRssService
-import me.ash.reader.domain.service.OpmlService
 import me.ash.reader.domain.service.ReaderWorker
-import me.ash.reader.domain.service.RssService
 import me.ash.reader.domain.service.SyncWorker
 import me.ash.reader.domain.service.WidgetUpdateWorker
 import me.ash.reader.infrastructure.android.AndroidImageDownloader
@@ -28,23 +16,9 @@ import me.ash.reader.infrastructure.db.createAndroidDatabase
 import me.ash.reader.infrastructure.net.createOkHttpClient
 import me.ash.reader.infrastructure.platform.AppPaths
 import me.ash.reader.infrastructure.platform.createAndroidAppPaths
-import me.ash.reader.infrastructure.preference.SettingsProvider
-import me.ash.reader.infrastructure.rss.OPMLDataSource
-import me.ash.reader.infrastructure.rss.ReaderCacheHelper
-import me.ash.reader.infrastructure.rss.RssHelper
-import me.ash.reader.ui.page.adaptive.ArticleListReaderViewModel
-import me.ash.reader.ui.page.home.feeds.FeedsViewModel
-import me.ash.reader.ui.page.home.feeds.drawer.feed.FeedOptionViewModel
-import me.ash.reader.ui.page.home.feeds.drawer.group.GroupOptionViewModel
-import me.ash.reader.ui.page.home.feeds.subscribe.SubscribeViewModel
-import me.ash.reader.ui.page.settings.accounts.AccountViewModel
-import me.ash.reader.ui.page.settings.accounts.addition.AdditionViewModel
-import me.ash.reader.ui.page.settings.tips.UpdateViewModel
-import me.ash.reader.ui.page.settings.troubleshooting.TroubleshootingViewModel
 import me.ash.reader.ui.widget.WidgetRepository
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -81,83 +55,15 @@ actual val platformModule: Module = module {
     single { NotificationHelper(androidContext(), get(named(IO_DISPATCHER)), get(named(APPLICATION_SCOPE))) }
     single<me.ash.reader.infrastructure.platform.NotificationManager> { get<NotificationHelper>() }
     single { TextToSpeechManager(androidContext(), get(named(APPLICATION_SCOPE))) }
+    single<me.ash.reader.infrastructure.platform.TextToSpeechManager> { get<TextToSpeechManager>() }
     single { AndroidImageDownloader(androidContext(), get(named(IO_DISPATCHER)), get()) }
+    single<me.ash.reader.infrastructure.platform.ImageDownloader> { get<AndroidImageDownloader>() }
     single<me.ash.reader.infrastructure.platform.SyncScheduler> {
-        me.ash.reader.infrastructure.platform.AndroidSyncScheduler(get())
+        me.ash.reader.infrastructure.platform.AndroidSyncScheduler(get(), get(named(APPLICATION_SCOPE)))
     }
     single { WidgetRepository(androidContext(), get(named(APPLICATION_SCOPE)), get(), get(), get(), get()) }
 
     worker { SyncWorker(get(), get(), get(), get(), get()) }
     worker { ReaderWorker(get(), get(), get(), get()) }
     worker { WidgetUpdateWorker(get(), get(), get()) }
-
-    viewModel {
-        TroubleshootingViewModel(
-            get(),
-            get(),
-            get(),
-            get(named(IO_DISPATCHER)),
-            get(named(DEFAULT_DISPATCHER)),
-            get(named(MAIN_DISPATCHER)),
-            get(named(APPLICATION_SCOPE)),
-            get(),
-            get(),
-        )
-    }
-    viewModel {
-        AccountViewModel(
-            get(),
-            get(),
-            get(),
-            get(named(IO_DISPATCHER)),
-            get(named(DEFAULT_DISPATCHER)),
-            get(named(MAIN_DISPATCHER)),
-            get(named(APPLICATION_SCOPE)),
-        )
-    }
-    viewModel { AdditionViewModel(get(), get(), get(), get()) }
-    viewModel { UpdateViewModel(get()) }
-    viewModel { GroupOptionViewModel(get(), get(named(MAIN_DISPATCHER)), get(named(IO_DISPATCHER)), get(named(APPLICATION_SCOPE))) }
-    viewModel {
-        FeedOptionViewModel(
-            get(),
-            get(named(MAIN_DISPATCHER)),
-            get(named(IO_DISPATCHER)),
-            get(named(APPLICATION_SCOPE)),
-            get(),
-            get(),
-        )
-    }
-    viewModel { SubscribeViewModel(get(), get(), get(), get(), get(named(APPLICATION_SCOPE)), get()) }
-    viewModel {
-        FeedsViewModel(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(named(DEFAULT_DISPATCHER)),
-            get(named(IO_DISPATCHER)),
-            get(named(APPLICATION_SCOPE)),
-            get(),
-            get(),
-            get(),
-            get(),
-        )
-    }
-    viewModel {
-        ArticleListReaderViewModel(
-            get(),
-            get(named(IO_DISPATCHER)),
-            get(named(APPLICATION_SCOPE)),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-        )
-    }
 }

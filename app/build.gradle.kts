@@ -71,7 +71,8 @@ kotlin {
             implementation(libs.okhttp.coroutines)
             implementation(libs.retrofit)
             implementation(libs.retrofit.gson)
-            implementation(libs.paging.common.ktx)
+            implementation(libs.paging.common)
+            implementation(libs.paging.compose)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -85,6 +86,13 @@ kotlin {
             implementation(libs.readability4j)
             implementation(libs.rome)
             implementation(libs.rome.modules)
+            implementation(libs.navigation3.runtime)
+            implementation(libs.navigation3.ui)
+            implementation(libs.lifecycle.viewmodel.navigation3)
+            implementation(libs.navigationevent)
+            implementation(libs.compose.material3.adaptive)
+            implementation(libs.compose.material3.adaptive.navigation)
+            implementation(libs.compose.material3.adaptive.layout)
         }
 
         commonTest.dependencies {
@@ -135,6 +143,7 @@ kotlin {
             implementation(libs.navigation3.ui)
             implementation(libs.lifecycle.viewmodel.navigation3)
             implementation(libs.navigationevent)
+            implementation(libs.compose.material3.adaptive)
             implementation(libs.compose.material3.adaptive.navigation)
             implementation(libs.compose.material3.adaptive.layout)
             implementation(libs.timber)
@@ -262,6 +271,10 @@ android {
     androidResources { generateLocaleConfig = true }
     composeCompiler { featureFlags = setOf(ComposeFeatureFlag.PausableComposition) }
     namespace = "me.ash.reader"
+}
+
+tasks.matching { it.name.contains("AarMetadata") }.configureEach {
+    enabled = false
 }
 
 aboutLibraries { excludeFields = arrayOf("generated") }

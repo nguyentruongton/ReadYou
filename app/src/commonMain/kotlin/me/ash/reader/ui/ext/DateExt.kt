@@ -38,3 +38,36 @@ fun String.parseToDate(
 }
 
 fun Date.isFuture(staticDate: Date = Date()): Boolean = this.time > staticDate.time
+
+fun Date.formatAsString(
+    onlyHourMinute: Boolean? = false,
+    atHourMinute: Boolean? = false,
+): String {
+    val locale = java.util.Locale.getDefault()
+    val df = java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, locale)
+    val tf = java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT, locale)
+    return when {
+        onlyHourMinute == true -> tf.format(this)
+        atHourMinute == true -> "${df.format(this)}, ${tf.format(this)}"
+        else -> {
+            val now = df.format(Date())
+            val cal = java.util.Calendar.getInstance().apply {
+                time = Date()
+                add(java.util.Calendar.DAY_OF_MONTH, -1)
+            }
+            val yesterday = df.format(cal.time)
+            when (df.format(this)) {
+                now -> "Today"
+                yesterday -> "Yesterday"
+                else -> df.format(this)
+            }
+        }
+    }
+}
+
+fun Date.formatAsString(
+    context: Any?,
+    onlyHourMinute: Boolean? = false,
+    atHourMinute: Boolean? = false,
+): String = formatAsString(onlyHourMinute, atHourMinute)
+
