@@ -1,22 +1,12 @@
-@file:OptIn(ExperimentalTextApi::class)
-
 package me.ash.reader.ui.theme
 
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.sp
-import java.text.Bidi
-import me.ash.reader.R
-
-// TODO: Rename file to Typography.kt and add @Stable
 
 private val LabelSmallEmphasizedFont = FontFamily.SansSerif
 private val LabelSmallEmphasizedLineHeight = 16.0.sp
@@ -37,89 +27,11 @@ val SystemTypography =
             )
     )
 
+expect val GoogleSansFontFamily: FontFamily
+
 internal fun TextStyle.applyTextDirection(textDirection: TextDirection = TextDirection.Content) =
     this.copy(textDirection = textDirection)
 
-private val GoogleSansRegular =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W400,
-        variationSettings = FontVariation.Settings(FontVariation.weight(400)),
-    )
-
-private val GoogleSansMedium =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W500,
-        variationSettings = FontVariation.Settings(FontVariation.weight(500)),
-    )
-
-private val GoogleSansSemiBold =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W600,
-        variationSettings = FontVariation.Settings(FontVariation.weight(600)),
-    )
-
-private val GoogleSansBold =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W700,
-        variationSettings = FontVariation.Settings(FontVariation.weight(700)),
-    )
-
-private val GoogleSansItalic =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W400,
-        style = FontStyle.Italic,
-        variationSettings =
-            FontVariation.Settings(FontVariation.weight(400), FontVariation.italic(.5f)),
-    )
-private val GoogleSansMediumItalic =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W500,
-        style = FontStyle.Italic,
-        variationSettings =
-            FontVariation.Settings(FontVariation.weight(500), FontVariation.italic(.5f)),
-    )
-private val GoogleSansSemiBoldItalic =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W600,
-        style = FontStyle.Italic,
-        variationSettings =
-            FontVariation.Settings(FontVariation.weight(600), FontVariation.italic(.5f)),
-    )
-private val GoogleSansBoldItalic =
-    Font(
-        R.font.google_sans_flex,
-        weight = FontWeight.W700,
-        style = FontStyle.Italic,
-        variationSettings =
-            FontVariation.Settings(FontVariation.weight(700), FontVariation.italic(.5f)),
-    )
-val GoogleSansFontFamily =
-    FontFamily(
-        Font(R.font.google_sans_flex),
-        GoogleSansRegular,
-        GoogleSansMedium,
-        GoogleSansSemiBold,
-        GoogleSansBold,
-        // Add the new italic fonts here
-        GoogleSansItalic,
-        GoogleSansMediumItalic,
-        GoogleSansSemiBoldItalic,
-        GoogleSansBoldItalic,
-    )
-
-/**
- * Resolve the text to Rtl if the text requires BiDirectional
- *
- * @see [android.view.View.TEXT_DIRECTION_ANY_RTL]
- * @see [Bidi.requiresBidi]
- */
 fun TextStyle.applyTextDirection(requiresBidi: Boolean) =
     this.applyTextDirection(
         textDirection = if (requiresBidi) TextDirection.Rtl else TextDirection.Ltr
@@ -163,7 +75,7 @@ internal fun Typography.applyTextDirection() =
     )
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-internal fun Typography.applyFontFamily(fontFamily: FontFamily) =
+fun Typography.applyFontFamily(fontFamily: FontFamily) =
     this.copy(
         displayLarge = displayLarge.applyFontFamily(fontFamily),
         displayMedium = displayMedium.applyFontFamily(fontFamily),

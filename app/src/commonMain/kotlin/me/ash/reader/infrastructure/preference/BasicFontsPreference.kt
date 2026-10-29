@@ -9,6 +9,9 @@ import kotlinx.coroutines.launch
 import me.ash.reader.ui.ext.DataStoreKey
 import me.ash.reader.ui.ext.DataStoreKey.Companion.basicFonts
 import me.ash.reader.ui.ext.put
+import me.ash.reader.ui.theme.GoogleSansFontFamily
+import me.ash.reader.ui.theme.SystemTypography
+import me.ash.reader.ui.theme.applyFontFamily
 
 val LocalBasicFonts = compositionLocalOf<BasicFontsPreference> { BasicFontsPreference.default }
 
@@ -28,12 +31,16 @@ sealed class BasicFontsPreference(val value: Int) : Preference() {
     fun asFontFamily(): FontFamily =
         when (this) {
             System -> FontFamily.Default
-            GoogleSans -> FontFamily.SansSerif
+            GoogleSans -> GoogleSansFontFamily
             External -> FontFamily.Default
         }
 
     fun asTypography(): Typography =
-        Typography()
+        when (this) {
+            System -> SystemTypography
+            GoogleSans -> SystemTypography.applyFontFamily(GoogleSansFontFamily)
+            External -> SystemTypography
+        }
 
     companion object {
 

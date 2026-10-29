@@ -1,6 +1,6 @@
 package me.ash.reader.ui.svg
 
-import android.util.Log
+import me.ash.reader.infrastructure.platform.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import me.ash.reader.ui.theme.palette.TonalPalettes

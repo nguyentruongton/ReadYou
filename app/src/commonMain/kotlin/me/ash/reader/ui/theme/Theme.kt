@@ -1,25 +1,22 @@
 package me.ash.reader.ui.theme
 
-import android.os.Build
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import me.ash.reader.infrastructure.preference.LocalBasicFonts
 import me.ash.reader.infrastructure.preference.LocalThemeIndex
-import me.ash.reader.infrastructure.preference.asTypography
 import me.ash.reader.ui.theme.palette.LocalTonalPalettes
 import me.ash.reader.ui.theme.palette.TonalPalettes
 import me.ash.reader.ui.theme.palette.core.ProvideZcamViewingConditions
 import me.ash.reader.ui.theme.palette.dynamic.extractTonalPalettesFromUserWallpaper
 import me.ash.reader.ui.theme.palette.dynamicDarkColorScheme
 import me.ash.reader.ui.theme.palette.dynamicLightColorScheme
+
+@Composable
+expect fun PlatformSystemBarsEffect(useDarkTheme: Boolean)
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -28,23 +25,7 @@ fun AppTheme(
     wallpaperPalettes: List<TonalPalettes> = extractTonalPalettesFromUserWallpaper(),
     content: @Composable () -> Unit,
 ) {
-    val view = LocalView.current
-
-    LaunchedEffect(useDarkTheme) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (useDarkTheme) {
-                view.windowInsetsController?.setSystemBarsAppearance(
-                    0,
-                    APPEARANCE_LIGHT_STATUS_BARS,
-                )
-            } else {
-                view.windowInsetsController?.setSystemBarsAppearance(
-                    APPEARANCE_LIGHT_STATUS_BARS,
-                    APPEARANCE_LIGHT_STATUS_BARS,
-                )
-            }
-        }
-    }
+    PlatformSystemBarsEffect(useDarkTheme)
 
     val themeIndex = LocalThemeIndex.current
 
@@ -72,7 +53,7 @@ fun AppTheme(
                 colorScheme = if (useDarkTheme) darkColors else lightColors,
                 typography =
                     LocalBasicFonts.current
-                        .asTypography(LocalContext.current)
+                        .asTypography()
                         .applyTextDirection(),
                 shapes = Shapes,
                 content = content,

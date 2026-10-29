@@ -155,6 +155,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("org.jetbrains.compose.material3:material3-desktop:1.12.0-alpha03")
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
             }

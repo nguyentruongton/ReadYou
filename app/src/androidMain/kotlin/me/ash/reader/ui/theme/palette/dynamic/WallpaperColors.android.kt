@@ -1,11 +1,3 @@
-/**
- * Copyright (C) 2021 Kyant0
- *
- * @link https://github.com/Kyant0/MusicYou
- * @author Kyant0
- * @modifier Ashinch
- */
-
 package me.ash.reader.ui.theme.palette.dynamic
 
 import android.app.WallpaperManager
@@ -17,21 +9,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import me.ash.reader.infrastructure.preference.LocalCustomPrimaryColor
 import me.ash.reader.ui.theme.palette.TonalPalettes
-import me.ash.reader.ui.theme.palette.TonalPalettes.Companion.getSystemTonalPalettes
 import me.ash.reader.ui.theme.palette.TonalPalettes.Companion.toTonalPalettes
+import me.ash.reader.ui.theme.palette.getSystemTonalPalettes
 import me.ash.reader.ui.theme.palette.safeHexToColor
-
-object PresetColor {
-
-    val blue = Color(0xFF80BBFF)
-    val pink = Color(0xFFFFD8E4)
-    val purple = Color(0xFF62539f)
-    val yellow = Color(0xFFE9B666)
-}
 
 @Composable
 @Stable
-fun extractTonalPalettesFromUserWallpaper(): List<TonalPalettes> {
+actual fun extractTonalPalettesFromUserWallpaper(): List<TonalPalettes> {
     val context = LocalContext.current
     val customPrimaryColor = LocalCustomPrimaryColor.current
 
