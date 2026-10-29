@@ -399,12 +399,12 @@ Commit: `feat(kmp): migrate core UI components, dialogs and widgets to commonMai
 - Consumes: `AppEntry`, `AppTheme`, `SettingsProvider`, Koin ViewModels
 - Produces: Fully functional Compose UI running on both Android and Desktop
 
-- [ ] **Step 1: Move Navigation & Adaptive Layouts to `commonMain`**
+- [x] **Step 1: Move Navigation & Adaptive Layouts to `commonMain`**
 
 Move `AppEntry.kt`, `Route.kt` and `adaptive/` (`ArticleListReaderPage.kt`, `ArticleListReaderViewModel.kt`, `PaneMotion.kt`, `TopBar.kt`) to `commonMain`.
 Ensure `rememberListDetailPaneScaffoldNavigator` and adaptive components compile in `commonMain`.
 
-- [ ] **Step 2: Move all Screens / Pages to `commonMain`**
+- [x] **Step 2: Move all Screens / Pages to `commonMain`**
 
 Move:
 - `startup/StartupPage.kt`, `StartupViewModel.kt`
@@ -415,7 +415,7 @@ Move:
 - `common/ExtraName.kt`
 Update resource references from `R.string.*` to `Res.string.*`.
 
-- [ ] **Step 3: Update Desktop `Main.kt` to launch `AppEntry`**
+- [x] **Step 3: Update Desktop `Main.kt` to launch `AppEntry`**
 
 In `app/src/desktopMain/kotlin/me/ash/reader/Main.kt`:
 Wrap the window content in `SettingsProvider` and `AppTheme`:
@@ -441,12 +441,12 @@ fun main() = application {
 }
 ```
 
-- [ ] **Step 4: Create Desktop UI Smoke Test**
+- [x] **Step 4: Create Desktop UI Smoke Test**
 
 Create `app/src/desktopTest/kotlin/me/ash/reader/DesktopUiSmokeTest.kt`:
 Verify that Koin resolves `SettingsProvider`, `AccountService`, `FilterStateUseCase`, and all UI ViewModels without errors.
 
-- [ ] **Step 5: Execute Dual-Target Build & Verification**
+- [x] **Step 5: Execute Dual-Target Build & Verification**
 
 Run:
 ```bash
@@ -457,6 +457,6 @@ Verify:
 2. Desktop Uber JAR builds successfully.
 3. Android debug APK builds successfully.
 
-- [ ] **Step 6: Commit changes**
+- [x] **Step 6: Commit changes**
 
 Commit: `feat(kmp): complete Phase 2 - migrate full UI layer to commonMain & launch AppEntry on Desktop`
