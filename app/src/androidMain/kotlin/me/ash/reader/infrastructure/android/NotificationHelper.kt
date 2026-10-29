@@ -7,9 +7,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.graphics.drawable.toBitmapOrNull
-import coil.imageLoader
-import coil.request.ImageRequest
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
+import coil3.toBitmap
 import java.util.Random
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -50,10 +51,8 @@ class NotificationHelper(
             val favIcon =
                 withContext(ioDispatcher) {
                     feed.icon?.let { icon ->
-                        context.imageLoader
-                            .execute(ImageRequest.Builder(context).data(icon).build())
-                            .drawable
-                            ?.toBitmapOrNull()
+                        val result = context.imageLoader.execute(ImageRequest.Builder(context).data(icon).build())
+                        if (result is SuccessResult) result.image.toBitmap() else null
                     }
                 }
 

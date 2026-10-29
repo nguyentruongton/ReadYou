@@ -1,7 +1,7 @@
 package me.ash.reader.ui.component.base
 
 import android.graphics.BitmapFactory
-import android.util.Base64
+import java.util.Base64
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -45,7 +45,7 @@ fun Base64Image(
 
 private fun base64ToBytes(base64String: String): ByteArray {
     val base64Data = base64String.substringAfter("base64,")
-    return Base64.decode(base64Data, Base64.DEFAULT)
+    return Base64.getMimeDecoder().decode(base64Data)
 }
 
 @Composable

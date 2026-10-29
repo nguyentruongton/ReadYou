@@ -2,13 +2,14 @@ package me.ash.reader.ui.widget
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.size.Dimension
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
+import coil3.size.Dimension
+import coil3.toBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -130,15 +131,14 @@ class WidgetRepository(
         return withContext(Dispatchers.IO) {
             val link = imgUrl
             val imageLoader = context.imageLoader
-            imageLoader
+            val result = imageLoader
                 .execute(
                     ImageRequest.Builder(context)
                         .data(link)
                         .size(width = Dimension.Pixels(600), height = Dimension.Undefined)
                         .build()
                 )
-                .drawable
-                ?.toBitmapOrNull()
+            if (result is SuccessResult) result.image.toBitmap() else null
         }
     }
 

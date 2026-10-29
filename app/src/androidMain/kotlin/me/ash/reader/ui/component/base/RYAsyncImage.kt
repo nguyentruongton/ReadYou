@@ -12,12 +12,17 @@ import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.size.Precision
-import coil.size.Scale
-import coil.size.Size
+import coil3.compose.LocalPlatformContext
+import coil3.compose.rememberAsyncImagePainter
+import coil3.network.NetworkHeaders
+import coil3.network.httpHeaders
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
+import coil3.size.Precision
+import coil3.size.Scale
+import coil3.size.Size
 import me.ash.reader.ui.ext.extractDomain
 
 val SIZE_1000 = Size(1000, 1000)
@@ -28,7 +33,7 @@ fun RYAsyncImage(
     data: Any? = null,
     size: Size = Size.ORIGINAL,
     scale: Scale = Scale.FIT,
-    precision: Precision = Precision.AUTOMATIC,
+    precision: Precision = Precision.EXACT,
     contentScale: ContentScale = ContentScale.Fit,
     contentDescription: String? = null,
     @DrawableRes placeholder: Int? = null,
@@ -37,11 +42,11 @@ fun RYAsyncImage(
     val painter =
         rememberAsyncImagePainter(
             model =
-                ImageRequest.Builder(LocalContext.current)
+                ImageRequest.Builder(LocalPlatformContext.current)
                     .apply {
                         val domain = data.toString().extractDomain()
-                        if (data.toString().extractDomain() != null) {
-                            addHeader("Referer", domain!!)
+                        if (domain != null) {
+                            httpHeaders(NetworkHeaders.Builder().set("Referer", domain).build())
                         }
                     }
                     .data(data = data)

@@ -75,6 +75,9 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.components.resources)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.okhttp)
+            implementation(libs.coil.svg)
         }
 
         commonTest.dependencies {
@@ -99,9 +102,6 @@ kotlin {
             implementation(libs.compose.material.icons.extended)
             implementation(libs.compose.ui.tooling)
             implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.coil.base)
-            implementation(libs.coil.compose)
-            implementation(libs.coil.svg)
             implementation(libs.coil.gif)
             implementation(libs.android.svg)
             implementation(libs.opml.parser)

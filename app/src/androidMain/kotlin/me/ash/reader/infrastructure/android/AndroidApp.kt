@@ -2,8 +2,8 @@ package me.ash.reader.infrastructure.android
 
 import android.app.Application
 import androidx.work.Configuration
-import coil.Coil
-import coil.ImageLoader
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -68,7 +68,7 @@ class AndroidApp : Application(), Configuration.Provider, KoinComponent {
             workerInit()
             checkUpdate()
         }
-        Coil.setImageLoader(imageLoader)
+        SingletonImageLoader.setUnsafe(imageLoader)
     }
 
     /** Override the [Configuration.Builder] to provide the [KoinWorkerFactory]. */

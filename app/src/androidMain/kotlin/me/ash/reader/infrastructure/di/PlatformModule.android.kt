@@ -1,7 +1,8 @@
 package me.ash.reader.infrastructure.di
 
 import androidx.work.WorkManager
-import coil.ImageLoader
+import coil3.ImageLoader
+import me.ash.reader.infrastructure.image.ImageLoaderFactory
 import me.ash.reader.BuildConfig
 import me.ash.reader.domain.data.ArticlePagingListUseCase
 import me.ash.reader.domain.data.DiffMapHolder
@@ -59,7 +60,20 @@ actual val platformModule: Module = module {
             BuildConfig.USER_AGENT_STRING
         )
     }
-    single<ImageLoader> { provideImageLoader(androidContext(), get()) }
+    single<ImageLoader> {
+        ImageLoaderFactory.create(
+            context = androidContext(),
+            okHttpClient = get(),
+            cacheDir = get<AppPaths>().cacheDir,
+            extraComponents = {
+                if (android.os.Build.VERSION.SDK_INT >= 28) {
+                    add(coil3.gif.AnimatedImageDecoder.Factory())
+                } else {
+                    add(coil3.gif.GifDecoder.Factory())
+                }
+            }
+        )
+    }
     single<WorkManager> { WorkManager.getInstance(androidContext()) }
 
     singleOf(::AndroidStringsHelper)

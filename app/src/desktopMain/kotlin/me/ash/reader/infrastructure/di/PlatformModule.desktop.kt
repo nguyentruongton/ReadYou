@@ -1,5 +1,8 @@
 package me.ash.reader.infrastructure.di
 
+import coil3.ImageLoader
+import coil3.PlatformContext
+import me.ash.reader.infrastructure.image.ImageLoaderFactory
 import java.io.File
 import me.ash.reader.infrastructure.db.AndroidDatabase
 import me.ash.reader.infrastructure.db.createDesktopDatabase
@@ -18,5 +21,8 @@ actual val platformModule: Module = module {
     }
     single<OkHttpClient> {
         createOkHttpClient(get(), "ReadYou/0.16.2(47)")
+    }
+    single<ImageLoader> {
+        ImageLoaderFactory.create(PlatformContext.INSTANCE, get(), get<AppPaths>().cacheDir)
     }
 }

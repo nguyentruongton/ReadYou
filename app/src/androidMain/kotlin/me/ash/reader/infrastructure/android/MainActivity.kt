@@ -21,7 +21,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.profileinstaller.ProfileInstallerInitializer
 import androidx.work.WorkManager
-import coil.ImageLoader
+import coil3.ImageLoader
 import java.lang.reflect.Field
 import org.koin.android.ext.android.inject
 import org.koin.compose.viewmodel.koinViewModel

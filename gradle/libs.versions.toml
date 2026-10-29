@@ -29,7 +29,7 @@ work = "2.10.1"
 composeHtml = "1.0.2"
 
 # Coil
-coil = "2.5.0"
+coil = "3.1.0"
 
 # Compose Multiplatform
 composeMultiplatform = "1.8.2"
@@ -84,10 +84,11 @@ compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 # Coil
-coil-base = { group = "io.coil-kt", name = "coil-base", version.ref = "coil" }
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
-coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-compose-core = { group = "io.coil-kt.coil3", name = "coil-compose-core", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
+coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil" }
 
 # Koin
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
