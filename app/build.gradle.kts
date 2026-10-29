@@ -180,6 +180,12 @@ compose.desktop {
     }
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "me.ash.reader"
+    generateResClass = always
+}
+
 android {
     compileSdk = 36
 

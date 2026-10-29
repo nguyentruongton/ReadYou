@@ -111,7 +111,7 @@
     <string name="agree">स्वीकृत करें  </string>
     <string name="wallpaper_colors">वॉलपेपर रंग</string>
     <string name="no_palettes">कोई पैलेट नहीं</string>
-    <string name="only_android_8.1_plus">केवल  Android 8.1+ हेतु </string>
+    <string name="only_android_8_1_plus">केवल  Android 8.1+ हेतु </string>
     <string name="basic_colors">मूल रंग</string>
     <string name="primary_color">प्राथमिक रंग</string>
     <string name="primary_color_hint">जैसे  #666666  या  666666</string>

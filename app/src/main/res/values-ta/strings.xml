@@ -120,7 +120,7 @@
     <string name="delete">அழி</string>
     <string name="delete_toast">%1$s அழிக்கப்பட்டது</string>
     <string name="all_parse_full_content_tips">\"%1$s\" குழுவின் அனைத்து கட்டுரைகளின் முழு உள்ளடக்கமும் அலகிடப்படுகிறது</string>
-    <string name="only_android_8.1_plus">Android 8.1+ இல் மட்டும்</string>
+    <string name="only_android_8_1_plus">Android 8.1+ இல் மட்டும்</string>
     <string name="all_deny_parse_full_content_toast">\"%1$s\" குழுவின் அனைத்து கட்டுரைகளின் முழு உள்ளடக்கமும் அலகிடப்படாது</string>
     <string name="group_option_tips">பின்வரும் விருப்பத்தேர்வுகள் இக்குழுவில்ருக்கும் அனைத்து ஊட்டங்களுக்கும் பொருந்தும்</string>
     <string name="open_source_licenses">விரி எழுவாய் உரிமங்கள்</string>

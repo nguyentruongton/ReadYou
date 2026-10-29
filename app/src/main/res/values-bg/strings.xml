@@ -112,7 +112,7 @@
     <string name="agree">Съгласен</string>
     <string name="wallpaper_colors">Цветове от тапета</string>
     <string name="no_palettes">Без палитри</string>
-    <string name="only_android_8.1_plus">Само Android 8.1+</string>
+    <string name="only_android_8_1_plus">Само Android 8.1+</string>
     <string name="basic_colors">Основни цветове</string>
     <string name="primary_color">Основен цвят</string>
     <string name="primary_color_hint">Като #666666 или 666666</string>

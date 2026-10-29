@@ -118,7 +118,7 @@
     <string name="agree">একমত</string>
     <string name="wallpaper_colors">ওয়ালপেপারের রঙ</string>
     <string name="no_palettes">কোনও প্যালেট নেই</string>
-    <string name="only_android_8.1_plus">শুধুমাত্র অ্যান্ড্রয়েড ৮.১+</string>
+    <string name="only_android_8_1_plus">শুধুমাত্র অ্যান্ড্রয়েড ৮.১+</string>
     <string name="basic_colors">মৌলিক রঙ</string>
     <string name="primary_color">প্রাথমিক রঙ</string>
     <string name="primary_color_hint">এভাবে #666666 অথবা 666666</string>

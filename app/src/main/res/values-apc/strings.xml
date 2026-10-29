@@ -76,7 +76,7 @@
     <string name="agree">بقبل</string>
     <string name="wallpaper_colors">ألوان الوال-پايپر</string>
     <string name="no_palettes">مافي ألواح ألوان</string>
-    <string name="only_android_8.1_plus">بس لأندرويد 8.1+</string>
+    <string name="only_android_8_1_plus">بس لأندرويد 8.1+</string>
     <string name="basic_colors">الألوان الأساسية</string>
     <string name="primary_color">اللون الرئيسي</string>
     <string name="primary_color_hint">متلًا #666666 أو 666666</string>

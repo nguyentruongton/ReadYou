@@ -219,7 +219,7 @@
     <string name="agree">Ados</string>
     <string name="wallpaper_colors">Horma-paperaren koloreak</string>
     <string name="no_palettes">Paletarik ez</string>
-    <string name="only_android_8.1_plus">Android 8.1+ soilik</string>
+    <string name="only_android_8_1_plus">Android 8.1+ soilik</string>
     <string name="basic_colors">Oinarrizko koloreak</string>
     <string name="primary_color">Lehen kolorea</string>
     <string name="primary_color_hint">#666666 edo 666666 bezala</string>

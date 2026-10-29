@@ -136,7 +136,7 @@
     <string name="agree">Згоден</string>
     <string name="wallpaper_colors">Колір шпалер</string>
     <string name="no_palettes">Без палітри</string>
-    <string name="only_android_8.1_plus">Тільки Android 8.1+</string>
+    <string name="only_android_8_1_plus">Тільки Android 8.1+</string>
     <string name="basic_colors">Основні кольори</string>
     <string name="primary_color">Основний колір</string>
     <string name="primary_color_hint">Наприклад, #666666 або 666666</string>

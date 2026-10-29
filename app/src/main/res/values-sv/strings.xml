@@ -92,7 +92,7 @@
     <string name="agree">Jag instämmer</string>
     <string name="wallpaper_colors">Bakgrundbild färger</string>
     <string name="no_palettes">Inga paletter</string>
-    <string name="only_android_8.1_plus">Enbart Android 8.1+</string>
+    <string name="only_android_8_1_plus">Enbart Android 8.1+</string>
     <string name="basic_colors">Grundläggande färger</string>
     <string name="primary_color">Grundfärg</string>
     <string name="primary_color_hint">Som #666666 eller 666666</string>

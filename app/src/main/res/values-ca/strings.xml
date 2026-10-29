@@ -113,7 +113,7 @@
     <string name="agree">Accepto</string>
     <string name="wallpaper_colors">Colors de fons</string>
     <string name="no_palettes">Sense paletes de colors</string>
-    <string name="only_android_8.1_plus">Només Android 8.1 i superior</string>
+    <string name="only_android_8_1_plus">Només Android 8.1 i superior</string>
     <string name="basic_colors">Colors bàsics</string>
     <string name="primary_color_hint">Com #666666 o 666666</string>
     <string name="appearance">Aparença</string>

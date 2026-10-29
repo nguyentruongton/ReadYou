@@ -157,7 +157,7 @@
     <string name="agree">Elfogadás</string>
     <string name="wallpaper_colors">Háttérszínek</string>
     <string name="no_palettes">Nincsenek paletták</string>
-    <string name="only_android_8.1_plus">Csak Android 8.1+</string>
+    <string name="only_android_8_1_plus">Csak Android 8.1+</string>
     <string name="basic_colors">Alapvető színek</string>
     <string name="primary_color">Elsődleges szín</string>
     <string name="primary_color_hint">Például #666666 vagy 666666</string>

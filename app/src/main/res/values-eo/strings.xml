@@ -78,7 +78,7 @@
     <string name="agree">Akcepti</string>
     <string name="wallpaper_colors">Tapetaj koloroj</string>
     <string name="no_palettes">Neniuj paletoj</string>
-    <string name="only_android_8.1_plus">Nur Android 8.1+</string>
+    <string name="only_android_8_1_plus">Nur Android 8.1+</string>
     <string name="basic_colors">Bazaj koloroj</string>
     <string name="primary_color">Ĉefa koloro</string>
     <string name="primary_color_hint">Ekzemple #666666 aŭ 666666</string>

@@ -147,7 +147,7 @@
     <string name="basic_colors">Osnovne barve</string>
     <string name="primary_color_hint">Kot #666666 ali 666666</string>
     <string name="appearance">Videz</string>
-    <string name="only_android_8.1_plus">Samo za Android 8.1+</string>
+    <string name="only_android_8_1_plus">Samo za Android 8.1+</string>
     <string name="primary_color">Primarna barva</string>
     <string name="style">Slog</string>
     <string name="dark_theme">Temna tema</string>

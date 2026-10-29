@@ -98,7 +98,7 @@
     <string name="agree">موافقت</string>
     <string name="wallpaper_colors">رنگ های کاغذ دیواری</string>
     <string name="no_palettes">بدون پالت</string>
-    <string name="only_android_8.1_plus">فقط در اندروید ۸.۱ به بالا</string>
+    <string name="only_android_8_1_plus">فقط در اندروید ۸.۱ به بالا</string>
     <string name="basic_colors">رنگ های پایه</string>
     <string name="primary_color">رنگ اصلی</string>
     <string name="primary_color_hint">مانند #666666 یا 666666</string>

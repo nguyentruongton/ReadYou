@@ -132,7 +132,7 @@
     <string name="welcome">Tere tulemast</string>
     <string name="agree">Nõustun</string>
     <string name="no_palettes">Värvipalette pole</string>
-    <string name="only_android_8.1_plus">Vaid Android 8.1+ jaoks</string>
+    <string name="only_android_8_1_plus">Vaid Android 8.1+ jaoks</string>
     <string name="basic_colors">Põhivärvid</string>
     <string name="primary_color">Esmane värv</string>
     <string name="primary_color_hint">Näiteks #666666 või 666666</string>
