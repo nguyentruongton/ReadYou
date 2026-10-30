@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,6 +30,7 @@ import me.ash.reader.ui.component.reader.LocalTextContentWidth
 import me.ash.reader.ui.component.reader.Reader
 import me.ash.reader.ui.component.scrollbar.drawVerticalScrollIndicator
 import me.ash.reader.ui.component.webview.RYWebView
+import me.ash.reader.ui.component.webview.isEmbeddedNativeWebView
 import me.ash.reader.ui.ext.extractDomain
 import me.ash.reader.ui.ext.roundClick
 
@@ -58,15 +60,13 @@ fun Content(
     val headline =
         @Composable {
             Column(modifier = Modifier.then(maxWidthModifier).padding(horizontal = 12.dp)) {
-                DisableSelection {
-                    Metadata(
-                        feedName = feedName,
-                        title = title,
-                        author = author,
-                        publishedDate = publishedDate,
-                        modifier = Modifier.roundClick { link?.let { uriHandler.openUri(it) } },
-                    )
-                }
+                Metadata(
+                    feedName = feedName,
+                    title = title,
+                    author = author,
+                    publishedDate = publishedDate,
+                    modifier = Modifier.roundClick { link?.let { uriHandler.openUri(it) } },
+                )
             }
         }
 
@@ -75,33 +75,60 @@ fun Content(
     } else {
         when (renderer) {
             ReadingRendererPreference.WebView -> {
-                Column(
-                    modifier =
-                        modifier
-                            .padding(top = contentPadding.calculateTopPadding())
-                            .fillMaxSize()
-                            .drawVerticalScrollIndicator(scrollState)
-                ) {
+                if (isEmbeddedNativeWebView) {
                     Column(
-                        modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
+                        modifier =
+                            modifier
+                                .padding(top = contentPadding.calculateTopPadding())
+                                .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Column(modifier = Modifier.then(maxWidthModifier)) {
-                            // Top bar height
+                        Column(
+                            modifier = Modifier.then(maxWidthModifier).fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
                             Spacer(modifier = Modifier.height(64.dp))
-                            // padding
                             headline()
-
                             RYWebView(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier.weight(1f).fillMaxWidth(),
                                 content = content,
                                 refererDomain = link.extractDomain(),
                                 onImageClick = onImageClick,
                             )
-                            Spacer(modifier = Modifier.height(128.dp))
-                            Spacer(
-                                modifier = Modifier.height(contentPadding.calculateBottomPadding())
-                            )
+                        }
+                    }
+                } else {
+                    Column(
+                        modifier =
+                            modifier
+                                .padding(top = contentPadding.calculateTopPadding())
+                                .fillMaxSize()
+                                .drawVerticalScrollIndicator(scrollState)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Column(modifier = Modifier.then(maxWidthModifier)) {
+                                // Top bar height
+                                Spacer(modifier = Modifier.height(64.dp))
+                                // padding
+                                headline()
+
+                                RYWebView(
+                                    modifier = Modifier.fillMaxSize(),
+                                    content = content,
+                                    refererDomain = link.extractDomain(),
+                                    onImageClick = onImageClick,
+                                )
+                                Spacer(modifier = Modifier.height(128.dp))
+                                Spacer(
+                                    modifier =
+                                        Modifier.height(
+                                            contentPadding.calculateBottomPadding()
+                                        )
+                                )
+                            }
                         }
                     }
                 }

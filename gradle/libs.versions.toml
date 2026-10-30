@@ -27,6 +27,7 @@ room = "2.7.2"
 work = "2.10.1"
 
 composeHtml = "1.0.2"
+composeWebview = "1.0.0-beta-02"
 
 # Coil
 coil = "3.1.0"
@@ -72,6 +73,7 @@ aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compos
 
 # Compose
 compose-html = { group = "com.github.ireward", name = "compose-html", version.ref = "composeHtml" }
+compose-webview = { module = "io.github.kdroidfilter:composewebview", version.ref = "composeWebview" }
 compose-bom-alpha = { group = "androidx.compose", name = "compose-bom-alpha", version.ref = "composeBomAlpha" }
 compose-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }

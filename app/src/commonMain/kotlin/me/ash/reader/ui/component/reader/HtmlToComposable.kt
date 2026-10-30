@@ -31,7 +31,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import java.io.InputStream
 import me.ash.reader.*
+import me.ash.reader.infrastructure.preference.LocalReadingBoldCharacters
 import me.ash.reader.infrastructure.preference.LocalReadingImageMaximize
 import me.ash.reader.ui.ext.requiresBidi
 import me.ash.reader.ui.theme.applyTextDirection
@@ -107,12 +110,21 @@ private fun LazyListScope.formatBody(
                         else -> it
                     }
                 }
-            val requiresBidi = paragraph.toString().requiresBidi()
+            val isBoldCharacters = LocalReadingBoldCharacters.current.value
+            val paragraphWithBionic =
+                if (isBoldCharacters) {
+                    val boldSpanStyle =
+                        SpanStyle(fontWeight = FontWeight.Bold, color = onSurfaceColor())
+                    BionicReadingHelper.applyBionicReading(paragraph, boldSpanStyle)
+                } else {
+                    paragraph
+                }
+            val requiresBidi = paragraphWithBionic.toString().requiresBidi()
             val textStyle = bodyStyle().applyTextDirection(requiresBidi = requiresBidi)
             val contentWidth = LocalTextContentWidth.current
 
             Text(
-                text = paragraph,
+                text = paragraphWithBionic,
                 style = textStyle,
                 modifier =
                     Modifier.width(contentWidth).padding(horizontal = textHorizontalPadding().dp),
@@ -180,10 +192,102 @@ private fun LazyListScope.formatCodeBlock(
     composer.terminateCurrentText()
 }
 
+private fun LazyListScope.formatBlockquote(
+    element: Element,
+    subheadUpperCase: Boolean = false,
+    listDepth: Int = 0,
+    imagePlaceholder: Any? = null,
+    onImageClick: ((imgUrl: String, altText: String) -> Unit)? = null,
+    onLinkClick: (String) -> Unit,
+    baseUrl: String,
+) {
+    val composer = TextComposer { paragraphBuilder ->
+        item {
+            val textLinkStyles = textLinkStyles()
+            val paragraph =
+                paragraphBuilder.toAnnotatedString().mapAnnotations {
+                    when (it.item) {
+                        is LinkAnnotation.Url -> {
+                            val link = (it.item as LinkAnnotation.Url)
+                            val newLink =
+                                link.copy(
+                                    styles = textLinkStyles,
+                                    linkInteractionListener = { onLinkClick(link.url) },
+                                )
+                            (it as AnnotatedString.Range<LinkAnnotation.Url>).copy(item = newLink)
+                        }
+
+                        else -> it
+                    }
+                }
+            val isBoldCharacters = LocalReadingBoldCharacters.current.value
+            val paragraphWithBionic =
+                if (isBoldCharacters) {
+                    val boldSpanStyle =
+                        SpanStyle(fontWeight = FontWeight.Bold, color = onSurfaceColor())
+                    BionicReadingHelper.applyBionicReading(paragraph, boldSpanStyle)
+                } else {
+                    paragraph
+                }
+            val requiresBidi = paragraphWithBionic.toString().requiresBidi()
+            val textStyle =
+                bodyStyle()
+                    .copy(fontStyle = FontStyle.Italic)
+                    .applyTextDirection(requiresBidi = requiresBidi)
+            val contentWidth = LocalTextContentWidth.current
+
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                modifier =
+                    Modifier.width(contentWidth)
+                        .padding(horizontal = textHorizontalPadding().dp, vertical = 4.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                            shape = RoundedCornerShape(topEnd = 6.dp, bottomEnd = 6.dp),
+                        )
+                        .height(IntrinsicSize.Min)
+                        .padding(vertical = 8.dp),
+            ) {
+                Box(
+                    modifier =
+                        Modifier.width(3.dp)
+                            .fillMaxHeight()
+                            .padding(start = 2.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                shape = RoundedCornerShape(1.5.dp),
+                            ),
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = paragraphWithBionic,
+                    style = textStyle,
+                    modifier = Modifier.weight(1f).padding(end = 8.dp),
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+        }
+    }
+
+    composer.appendTextChildren(
+        element.childNodes(),
+        subheadUpperCase = subheadUpperCase,
+        listDepth = listDepth,
+        lazyListScope = this,
+        imagePlaceholder = imagePlaceholder,
+        onImageClick = onImageClick,
+        onLinkClick = onLinkClick,
+        baseUrl = baseUrl,
+    )
+
+    composer.terminateCurrentText()
+}
+
 private fun TextComposer.appendTextChildren(
     nodes: List<Node>,
     preFormatted: Boolean = false,
     subheadUpperCase: Boolean = false,
+    listDepth: Int = 0,
     lazyListScope: LazyListScope,
     imagePlaceholder: Any? = null,
     onImageClick: ((imgUrl: String, altText: String) -> Unit)?,
@@ -417,16 +521,45 @@ private fun TextComposer.appendTextChildren(
                         }
                     }
 
+                    "hr" -> {
+                        terminateCurrentText()
+                        lazyListScope.item {
+                            val contentWidth = LocalTextContentWidth.current
+                            HorizontalDivider(
+                                modifier =
+                                    Modifier.width(contentWidth)
+                                        .padding(
+                                            horizontal = textHorizontalPadding().dp,
+                                            vertical = 16.dp,
+                                        ),
+                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                            )
+                        }
+                    }
+
                     "pre" -> {
-                        appendTextChildren(
-                            element.childNodes(),
-                            preFormatted = true,
-                            lazyListScope = lazyListScope,
-                            imagePlaceholder = imagePlaceholder,
-                            onImageClick = onImageClick,
-                            onLinkClick = onLinkClick,
-                            baseUrl = baseUrl,
-                        )
+                        if (element.children().none { it.tagName() == "code" }) {
+                            terminateCurrentText()
+                            lazyListScope.formatCodeBlock(
+                                element = element,
+                                imagePlaceholder = imagePlaceholder,
+                                onImageClick = onImageClick,
+                                onLinkClick = onLinkClick,
+                                baseUrl = baseUrl,
+                            )
+                        } else {
+                            appendTextChildren(
+                                element.childNodes(),
+                                preFormatted = true,
+                                subheadUpperCase = subheadUpperCase,
+                                listDepth = listDepth,
+                                lazyListScope = lazyListScope,
+                                imagePlaceholder = imagePlaceholder,
+                                onImageClick = onImageClick,
+                                onLinkClick = onLinkClick,
+                                baseUrl = baseUrl,
+                            )
+                        }
                     }
 
                     "code" -> {
@@ -456,23 +589,16 @@ private fun TextComposer.appendTextChildren(
                     }
 
                     "blockquote" -> {
-                        withParagraph {
-                            withSpanStyle(
-                                SpanStyle(
-                                    fontStyle = FontStyle.Italic,
-                                    fontWeight = FontWeight.Light,
-                                )
-                            ) {
-                                appendTextChildren(
-                                    element.childNodes(),
-                                    lazyListScope = lazyListScope,
-                                    imagePlaceholder = imagePlaceholder,
-                                    onImageClick = onImageClick,
-                                    onLinkClick = onLinkClick,
-                                    baseUrl = baseUrl,
-                                )
-                            }
-                        }
+                        terminateCurrentText()
+                        lazyListScope.formatBlockquote(
+                            element = element,
+                            subheadUpperCase = subheadUpperCase,
+                            listDepth = listDepth,
+                            imagePlaceholder = imagePlaceholder,
+                            onImageClick = onImageClick,
+                            onLinkClick = onLinkClick,
+                            baseUrl = baseUrl,
+                        )
                     }
 
                     "a" -> {
@@ -542,10 +668,18 @@ private fun TextComposer.appendTextChildren(
                             .filter { it.tagName() == "li" }
                             .forEach { listItem ->
                                 withParagraph {
-                                    // no break space
-                                    append("  • ")
+                                    val bullet =
+                                        when (listDepth % 3) {
+                                            0 -> "•"
+                                            1 -> "◦"
+                                            else -> "▪"
+                                        }
+                                    val indent = "  ".repeat(listDepth + 1)
+                                    append("$indent$bullet ")
                                     appendTextChildren(
                                         listItem.childNodes(),
+                                        subheadUpperCase = subheadUpperCase,
+                                        listDepth = listDepth + 1,
                                         lazyListScope = lazyListScope,
                                         imagePlaceholder = imagePlaceholder,
                                         onLinkClick = onLinkClick,
@@ -562,10 +696,12 @@ private fun TextComposer.appendTextChildren(
                             .filter { it.tagName() == "li" }
                             .forEachIndexed { i, listItem ->
                                 withParagraph {
-                                    // no break space
-                                    append("${i + 1}. ")
+                                    val indent = "  ".repeat(listDepth + 1)
+                                    append("$indent${i + 1}. ")
                                     appendTextChildren(
                                         listItem.childNodes(),
+                                        subheadUpperCase = subheadUpperCase,
+                                        listDepth = listDepth + 1,
                                         lazyListScope = lazyListScope,
                                         imagePlaceholder = imagePlaceholder,
                                         onLinkClick = onLinkClick,

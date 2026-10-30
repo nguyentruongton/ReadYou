@@ -12,6 +12,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyListState
@@ -32,6 +33,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalUriHandler
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
@@ -40,6 +42,8 @@ import androidx.compose.ui.unit.sp
 import kotlin.math.abs
 import kotlinx.coroutines.launch
 import me.ash.reader.*
+import me.ash.reader.infrastructure.platform.DesktopShortcutEvent
+import me.ash.reader.infrastructure.platform.LocalDesktopShortcutCoordinator
 import me.ash.reader.infrastructure.platform.TextToSpeechManager
 import me.ash.reader.infrastructure.preference.LocalPullToSwitchArticle
 import me.ash.reader.infrastructure.preference.LocalReadingAutoHideToolbar
@@ -74,6 +78,53 @@ fun ReadingPage(
     val readerState = viewModel.readerStateStateFlow.collectAsStateValue()
     val boldCharacters = LocalReadingBoldCharacters.current
     val coroutineScope = rememberCoroutineScope()
+    val shortcutCoordinator = LocalDesktopShortcutCoordinator.current
+    val uriHandler = LocalUriHandler.current
+
+    LaunchedEffect(shortcutCoordinator, readerState.articleId, readingUiState) {
+        shortcutCoordinator.events.collect { event ->
+            when (event) {
+                DesktopShortcutEvent.NextArticle -> {
+                    readerState.nextArticle?.let { (id, index) -> onLoadArticle(id, index) }
+                }
+                DesktopShortcutEvent.PreviousArticle -> {
+                    readerState.previousArticle?.let { (id, index) -> onLoadArticle(id, index) }
+                }
+                DesktopShortcutEvent.ToggleRead -> {
+                    if (readerState.articleId != null) {
+                        viewModel.updateReadStatus(!readingUiState.isUnread)
+                    }
+                }
+                DesktopShortcutEvent.ToggleStarred -> {
+                    if (readerState.articleId != null) {
+                        viewModel.updateStarredStatus(!readingUiState.isStarred)
+                    }
+                }
+                DesktopShortcutEvent.Sync -> {
+                    viewModel.sync()
+                }
+                DesktopShortcutEvent.ToggleBionicReading -> {
+                    (!boldCharacters).put(coroutineScope)
+                }
+                DesktopShortcutEvent.OpenInBrowser -> {
+                    readerState.link?.takeIf { it.isNotBlank() }?.let { uriHandler.openUri(it) }
+                }
+                DesktopShortcutEvent.ToggleTts -> {
+                    if (viewModel.textToSpeechManager.state is TextToSpeechManager.State.Idle) {
+                        viewModel.textToSpeechManager.readHtml(readerState.content.text ?: "")
+                    } else {
+                        viewModel.textToSpeechManager.stop()
+                    }
+                }
+                DesktopShortcutEvent.EscapeBack -> {
+                    if (readerState.articleId != null) {
+                        onNavAction(NavigationAction.Close)
+                    }
+                }
+                else -> {}
+            }
+        }
+    }
 
     var isReaderScrollingDown by remember { mutableStateOf(false) }
     var showFullScreenImageViewer by remember { mutableStateOf(false) }
@@ -210,6 +261,34 @@ fun ReadingPage(
                                                 }
                                             }
                                             .invokeOnCompletion { bringToTop = false }
+                                    }
+                                }
+
+                                LaunchedEffect(shortcutCoordinator) {
+                                    shortcutCoordinator.events.collect { event ->
+                                        when (event) {
+                                            DesktopShortcutEvent.PageDown -> {
+                                                val delta =
+                                                    (listState.layoutInfo.viewportSize.height * 0.8f)
+                                                        .coerceAtLeast(300f)
+                                                if (scrollState.maxValue > 0) {
+                                                    scrollState.animateScrollBy(delta)
+                                                } else {
+                                                    listState.animateScrollBy(delta)
+                                                }
+                                            }
+                                            DesktopShortcutEvent.PageUp -> {
+                                                val delta =
+                                                    (listState.layoutInfo.viewportSize.height * 0.8f)
+                                                        .coerceAtLeast(300f)
+                                                if (scrollState.maxValue > 0) {
+                                                    scrollState.animateScrollBy(-delta)
+                                                } else {
+                                                    listState.animateScrollBy(-delta)
+                                                }
+                                            }
+                                            else -> {}
+                                        }
                                     }
                                 }
 

@@ -6,7 +6,7 @@ interface TextToSpeechManager {
     sealed interface State {
         object Idle : State
         object Preparing : State
-        class Reading(val current: Int = 0, val total: Int = 100) : State {
+        data class Reading(val current: Int = 0, val total: Int = 100) : State {
             val progress: Float
                 get() = if (total > 0) current.toFloat() / total else 0f
         }

@@ -30,6 +30,9 @@ class DesktopUiSmokeTest {
             assertNotNull(koin.get<SubscribeViewModel>())
             assertNotNull(koin.get<AccountViewModel>())
             assertNotNull(koin.get<ArticleListReaderViewModel>())
+            assertNotNull(koin.get<me.ash.reader.infrastructure.platform.DesktopShortcutCoordinator>())
+            assertNotNull(koin.get<me.ash.reader.infrastructure.platform.SyncScheduler>())
+            assertNotNull(koin.get<me.ash.reader.infrastructure.platform.TextToSpeechManager>())
         } finally {
             stopKoin()
         }

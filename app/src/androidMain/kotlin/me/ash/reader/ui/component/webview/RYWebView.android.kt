@@ -34,6 +34,8 @@ import me.ash.reader.ui.ext.openURL
 import me.ash.reader.ui.ext.surfaceColorAtElevation
 import me.ash.reader.ui.theme.palette.alwaysLight
 
+actual val isEmbeddedNativeWebView: Boolean = false
+
 @Composable
 actual fun RYWebView(
     modifier: Modifier,
