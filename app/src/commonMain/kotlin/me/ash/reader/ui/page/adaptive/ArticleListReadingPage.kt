@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import java.util.concurrent.Executors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.ash.reader.infrastructure.platform.DesktopShortcutEvent
+import me.ash.reader.infrastructure.platform.LocalDesktopShortcutCoordinator
 import me.ash.reader.ui.component.reader.ExpandedContentWidth
 import me.ash.reader.ui.component.reader.LocalTextContentWidth
 import me.ash.reader.ui.component.reader.MediumContentWidth
@@ -113,6 +115,18 @@ fun ArticleListReaderPage(
     val animatedListAlpha by animateFloatAsState(listAlpha)
 
     val canNavigateBack = navigator.canNavigateBack(backBehavior)
+    val shortcutCoordinator = LocalDesktopShortcutCoordinator.current
+    LaunchedEffect(shortcutCoordinator, canNavigateBack) {
+        shortcutCoordinator.events.collect { event ->
+            if (event == DesktopShortcutEvent.EscapeBack && navigator.currentDestination?.contentKey == null) {
+                if (canNavigateBack) {
+                    navigator.navigateBack(backBehavior)
+                } else {
+                    onBack()
+                }
+            }
+        }
+    }
     BackHandler(enabled = canNavigateBack) {
         scope.launch {
             navigator.navigateBack(backBehavior)

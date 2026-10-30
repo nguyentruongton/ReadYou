@@ -26,7 +26,24 @@ actual val platformModule: Module = module {
         ImageLoaderFactory.create(PlatformContext.INSTANCE, get(), get<AppPaths>().cacheDir)
     }
     single<me.ash.reader.infrastructure.platform.SyncScheduler> {
-        me.ash.reader.infrastructure.platform.DesktopSyncScheduler(get(org.koin.core.qualifier.named(APPLICATION_SCOPE)))
+        val scope = this
+        me.ash.reader.infrastructure.platform.DesktopSyncScheduler(
+            coroutineScope = get(org.koin.core.qualifier.named(APPLICATION_SCOPE)),
+            onSyncRequest = { targetAccountId, feedId, groupId ->
+                val rssService: me.ash.reader.domain.service.RssService = scope.get()
+                val accountService: me.ash.reader.domain.service.AccountService = scope.get()
+                val readerCacheHelper: me.ash.reader.infrastructure.rss.ReaderCacheHelper = scope.get()
+                val resolvedAccountId = targetAccountId ?: accountService.getCurrentAccountId()
+                val svc = rssService.get(resolvedAccountId)
+                svc.sync(accountId = resolvedAccountId, feedId = feedId, groupId = groupId)
+                svc.clearKeepArchivedArticles().forEach {
+                    readerCacheHelper.deleteCacheFor(articleId = it.id)
+                }
+            },
+        )
+    }
+    single<me.ash.reader.infrastructure.platform.DesktopShortcutCoordinator> {
+        me.ash.reader.infrastructure.platform.DesktopShortcutCoordinator()
     }
     single<me.ash.reader.infrastructure.platform.StringsHelper> {
         me.ash.reader.infrastructure.platform.CommonStringsHelper()
