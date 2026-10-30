@@ -44,6 +44,8 @@ class DesktopPackagingAndCiTest {
         assertTrue("release_desktop.yaml must exist", workflowFile.exists())
         val workflow = workflowFile.readText()
         assertTrue(workflow.contains("packageMsi"))
+        assertTrue(workflow.contains("gradlew.bat"))
+        assertTrue(workflow.contains(".tar.gz"))
         assertTrue(workflow.contains("merge-macos-universal.sh"))
         assertTrue(workflow.contains("ReadYou-macOS-Universal.dmg"))
     }

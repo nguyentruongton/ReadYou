@@ -100,11 +100,11 @@ actual object PlatformFontLoader {
         return when (readingFonts) {
             is ReadingFontsPreference.External -> {
                 val file = File(DesktopFontManager.defaultFontsDir(), "reading_font.ttf")
-                if (file.exists() && file.length() > 0) file.absolutePath else null
+                if (file.exists() && file.length() > 0) file.absolutePath.replace('\\', '/') else null
             }
             is ReadingFontsPreference.GoogleSans -> {
                 val extracted = DesktopFontManager.ensureBundledGoogleSansExtracted()
-                extracted?.absolutePath
+                extracted?.absolutePath?.replace('\\', '/')
             }
             else -> null
         }

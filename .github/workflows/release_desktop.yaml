@@ -20,7 +20,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Package Windows MSI
-        run: ./gradlew :app:packageMsi
+        run: .\gradlew.bat :app:packageMsi
       - name: Upload Windows MSI Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -48,11 +48,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
       - name: Create macOS Distributable (${{ matrix.arch }})
         run: ./gradlew :app:createDistributable
+      - name: Compress macOS Distributable (${{ matrix.arch }})
+        run: tar -czf "ReadYou-macOS-${{ matrix.arch }}.tar.gz" -C app/build/compose/binaries/main/app ReadYou.app
       - name: Upload macOS Distributable (${{ matrix.arch }})
         uses: actions/upload-artifact@v4
         with:
           name: ReadYou-macOS-${{ matrix.arch }}
-          path: app/build/compose/binaries/main/app/ReadYou.app
+          path: ReadYou-macOS-${{ matrix.arch }}.tar.gz
 
   package-macos-universal:
     name: Package macOS Universal DMG
@@ -60,16 +62,21 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - name: Download macOS arm64 App
+      - name: Download macOS arm64 App Archive
         uses: actions/download-artifact@v4
         with:
           name: ReadYou-macOS-arm64
-          path: build-arm64/ReadYou.app
-      - name: Download macOS x86_64 App
+          path: artifacts-arm64
+      - name: Download macOS x86_64 App Archive
         uses: actions/download-artifact@v4
         with:
           name: ReadYou-macOS-x86_64
-          path: build-x64/ReadYou.app
+          path: artifacts-x64
+      - name: Extract macOS Distributables
+        run: |
+          mkdir -p build-arm64 build-x64
+          tar -xzf artifacts-arm64/ReadYou-macOS-arm64.tar.gz -C build-arm64
+          tar -xzf artifacts-x64/ReadYou-macOS-x86_64.tar.gz -C build-x64
       - name: Merge into Universal macOS Application
         run: |
           chmod +x scripts/merge-macos-universal.sh

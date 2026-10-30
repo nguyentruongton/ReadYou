@@ -26,6 +26,7 @@ class DesktopSyncScheduler(
         try {
             onSyncRequest(accountId, feedId, groupId)
         } catch (e: Exception) {
+            if (e is kotlinx.coroutines.CancellationException) throw e
             e.printStackTrace()
         } finally {
             _isSyncing.value = false

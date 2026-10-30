@@ -41,10 +41,13 @@ class DesktopFontAndVersionTest {
             assertTrue(corruptedFile.exists())
             assertNotNull(DesktopFontManager.loadFontFamilyFromFile(corruptedFile))
 
-            // Bundled Google Sans Flex can be extracted for WebView @font-face
+            // Bundled Google Sans Flex can be extracted for WebView @font-face and has normalized path
             val extracted = DesktopFontManager.ensureBundledGoogleSansExtracted(tempDir)
             assertNotNull(extracted)
             assertTrue(extracted!!.exists() && extracted.length() > 10_000L)
+            val fontPath = PlatformFontLoader.resolveWebViewFontPath(ReadingFontsPreference.GoogleSans)
+            assertNotNull(fontPath)
+            assertTrue("fontPath must not contain backslashes: $fontPath", !fontPath!!.contains('\\'))
         } finally {
             tempDir.deleteRecursively()
         }
