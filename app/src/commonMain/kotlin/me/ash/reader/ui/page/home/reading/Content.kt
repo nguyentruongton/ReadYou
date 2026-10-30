@@ -58,15 +58,13 @@ fun Content(
     val headline =
         @Composable {
             Column(modifier = Modifier.then(maxWidthModifier).padding(horizontal = 12.dp)) {
-                DisableSelection {
-                    Metadata(
-                        feedName = feedName,
-                        title = title,
-                        author = author,
-                        publishedDate = publishedDate,
-                        modifier = Modifier.roundClick { link?.let { uriHandler.openUri(it) } },
-                    )
-                }
+                Metadata(
+                    feedName = feedName,
+                    title = title,
+                    author = author,
+                    publishedDate = publishedDate,
+                    modifier = Modifier.roundClick { link?.let { uriHandler.openUri(it) } },
+                )
             }
         }
 
