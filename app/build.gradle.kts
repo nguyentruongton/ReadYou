@@ -1,5 +1,6 @@
 import java.io.FileInputStream
 import java.util.Properties
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -193,6 +194,45 @@ dependencies {
 compose.desktop {
     application {
         mainClass = "me.ash.reader.MainKt"
+
+        buildTypes.release.proguard {
+            isEnabled.set(false)
+        }
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi)
+            packageName = "ReadYou"
+            packageVersion = "1.16.2"
+            description = "Modern Material You RSS Reader for Android and Desktop"
+            vendor = "ReadYou"
+            licenseFile.set(rootProject.file("LICENSE"))
+
+            modules(
+                "java.sql",
+                "java.naming",
+                "jdk.unsupported",
+                "java.desktop",
+                "java.management",
+            )
+
+            macOS {
+                bundleID = "me.ash.reader"
+                dockName = "ReadYou"
+                iconFile.set(project.file("src/desktopMain/resources/icon.icns"))
+            }
+
+            windows {
+                menuGroup = "ReadYou"
+                shortcut = true
+                dirChooser = true
+                upgradeUuid = "8f4e2a1b-9c3d-4e5f-a6b7-c8d9e0f1a2b3"
+                iconFile.set(project.file("src/desktopMain/resources/icon.ico"))
+            }
+
+            linux {
+                iconFile.set(project.file("src/desktopMain/resources/icon.png"))
+            }
+        }
     }
 }
 
