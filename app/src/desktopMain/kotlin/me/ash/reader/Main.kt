@@ -28,9 +28,8 @@ import androidx.compose.ui.window.rememberWindowState
 import me.ash.reader.Res
 import me.ash.reader.ic_launcher_pure
 import org.jetbrains.compose.resources.painterResource
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.savedstate.serialization.SavedStateConfiguration
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import me.ash.reader.domain.service.AccountService
@@ -196,7 +195,7 @@ fun main() = application {
             AccountSettingsProvider(accountService = accountService) {
                 settingsProvider.ProvidesSettings {
                     AppTheme(useDarkTheme = LocalDarkTheme.current.isDarkTheme()) {
-                        val backStack = rememberNavBackStack(SavedStateConfiguration.DEFAULT, Route.Feeds as NavKey)
+                        val backStack = remember { NavBackStack<NavKey>(Route.Feeds) }
                         LaunchedEffect(shortcutCoordinator) {
                             shortcutCoordinator.events.collect { event ->
                                 if (event == DesktopShortcutEvent.OpenSettings) {
