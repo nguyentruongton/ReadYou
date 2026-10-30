@@ -10,3 +10,5 @@ expect fun RYWebView(
     refererDomain: String? = null,
     onImageClick: ((imgUrl: String, altText: String) -> Unit)? = null,
 )
+
+expect val isEmbeddedNativeWebView: Boolean
