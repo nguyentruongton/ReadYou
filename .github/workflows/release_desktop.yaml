@@ -1,0 +1,91 @@
+name: Release Desktop (Windows & macOS Universal)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-windows:
+    name: Build Windows MSI
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Package Windows MSI
+        run: .\gradlew.bat :app:packageMsi
+      - name: Upload Windows MSI Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReadYou-Windows-MSI
+          path: app/build/compose/binaries/main/msi/*.msi
+
+  build-macos-arch:
+    name: Build macOS (${{ matrix.arch }})
+    strategy:
+      matrix:
+        include:
+          - arch: arm64
+            runner: macos-15
+          - arch: x86_64
+            runner: macos-13
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Create macOS Distributable (${{ matrix.arch }})
+        run: ./gradlew :app:createDistributable
+      - name: Compress macOS Distributable (${{ matrix.arch }})
+        run: tar -czf "ReadYou-macOS-${{ matrix.arch }}.tar.gz" -C app/build/compose/binaries/main/app ReadYou.app
+      - name: Upload macOS Distributable (${{ matrix.arch }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReadYou-macOS-${{ matrix.arch }}
+          path: ReadYou-macOS-${{ matrix.arch }}.tar.gz
+
+  package-macos-universal:
+    name: Package macOS Universal DMG
+    needs: build-macos-arch
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download macOS arm64 App Archive
+        uses: actions/download-artifact@v4
+        with:
+          name: ReadYou-macOS-arm64
+          path: artifacts-arm64
+      - name: Download macOS x86_64 App Archive
+        uses: actions/download-artifact@v4
+        with:
+          name: ReadYou-macOS-x86_64
+          path: artifacts-x64
+      - name: Extract macOS Distributables
+        run: |
+          mkdir -p build-arm64 build-x64
+          tar -xzf artifacts-arm64/ReadYou-macOS-arm64.tar.gz -C build-arm64
+          tar -xzf artifacts-x64/ReadYou-macOS-x86_64.tar.gz -C build-x64
+      - name: Merge into Universal macOS Application
+        run: |
+          chmod +x scripts/merge-macos-universal.sh
+          bash scripts/merge-macos-universal.sh build-arm64/ReadYou.app build-x64/ReadYou.app Universal-ReadYou.app
+      - name: Create macOS Universal DMG
+        run: |
+          hdiutil create -volname "ReadYou" -srcfolder Universal-ReadYou.app -ov -format UDZO ReadYou-macOS-Universal.dmg
+      - name: Upload macOS Universal DMG Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReadYou-macOS-Universal-DMG
+          path: ReadYou-macOS-Universal.dmg

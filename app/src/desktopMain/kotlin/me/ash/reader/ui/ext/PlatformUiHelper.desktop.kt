@@ -28,7 +28,7 @@ actual suspend fun showToastSuspend(message: String?) {
     println("[ToastSuspend] $message")
 }
 
-actual fun getAppVersion(): Version = Version("0.7.2")
+actual fun getAppVersion(): Version = Version("0.16.2")
 
 actual fun shareText(title: String?, link: String?, contentPreference: SharedContentPreference) {
     val textToShare = when (contentPreference) {
@@ -61,10 +61,48 @@ actual val isGooglePlay: Boolean = false
 actual fun getPlatformBrowserList(): List<BrowserAppInfo> = emptyList()
 
 @Composable
-actual fun rememberBasicFontPicker(onLoaded: () -> Unit): () -> Unit = {}
+actual fun rememberBasicFontPicker(onLoaded: () -> Unit): () -> Unit {
+    return {
+        runCatching {
+            val dialog = java.awt.FileDialog(null as java.awt.Frame?, "Select Basic Font", java.awt.FileDialog.LOAD)
+            dialog.setFilenameFilter { _, name ->
+                val lower = name.lowercase()
+                lower.endsWith(".ttf") || lower.endsWith(".otf")
+            }
+            dialog.isVisible = true
+            val file = dialog.file?.let { java.io.File(dialog.directory, it) }
+            if (file != null && file.exists()) {
+                me.ash.reader.ui.theme.DesktopFontManager.installExternalFont(
+                    bytes = file.readBytes(),
+                    isReadingFont = false,
+                )
+                onLoaded()
+            }
+        }
+    }
+}
 
 @Composable
-actual fun rememberReadingFontPicker(onLoaded: () -> Unit): () -> Unit = {}
+actual fun rememberReadingFontPicker(onLoaded: () -> Unit): () -> Unit {
+    return {
+        runCatching {
+            val dialog = java.awt.FileDialog(null as java.awt.Frame?, "Select Reading Font", java.awt.FileDialog.LOAD)
+            dialog.setFilenameFilter { _, name ->
+                val lower = name.lowercase()
+                lower.endsWith(".ttf") || lower.endsWith(".otf")
+            }
+            dialog.isVisible = true
+            val file = dialog.file?.let { java.io.File(dialog.directory, it) }
+            if (file != null && file.exists()) {
+                me.ash.reader.ui.theme.DesktopFontManager.installExternalFont(
+                    bytes = file.readBytes(),
+                    isReadingFont = true,
+                )
+                onLoaded()
+            }
+        }
+    }
+}
 
 @Composable
 actual fun rememberFilePicker(onFileRead: (ByteArray) -> Unit): () -> Unit {

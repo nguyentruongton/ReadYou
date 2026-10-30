@@ -8,6 +8,8 @@ import kotlinx.coroutines.launch
 import me.ash.reader.ui.ext.DataStoreKey
 import me.ash.reader.ui.ext.DataStoreKey.Companion.readingFonts
 import me.ash.reader.ui.ext.put
+import me.ash.reader.ui.theme.GoogleSansFontFamily
+import me.ash.reader.ui.theme.PlatformFontLoader
 
 val LocalReadingFonts =
     compositionLocalOf<ReadingFontsPreference> { ReadingFontsPreference.default }
@@ -35,13 +37,13 @@ sealed class ReadingFontsPreference(val value: Int) : Preference() {
 
     fun asFontFamily(): FontFamily =
         when (this) {
-            GoogleSans -> FontFamily.SansSerif
+            GoogleSans -> GoogleSansFontFamily
             System -> FontFamily.Default
             Serif -> FontFamily.Serif
             SansSerif -> FontFamily.SansSerif
             Monospace -> FontFamily.Monospace
             Cursive -> FontFamily.Cursive
-            External -> FontFamily.Default
+            External -> PlatformFontLoader.loadReadingFontFamily()
         }
 
     companion object {

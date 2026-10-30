@@ -25,6 +25,9 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.isTraySupported
 import androidx.compose.ui.window.rememberWindowState
+import me.ash.reader.Res
+import me.ash.reader.ic_launcher_pure
+import org.jetbrains.compose.resources.painterResource
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.savedstate.serialization.SavedStateConfiguration
@@ -66,9 +69,11 @@ fun main() = application {
     var isWindowVisible by remember { mutableStateOf(true) }
     val windowState = rememberWindowState(size = DpSize(1200.dp, 800.dp))
 
+    val appIcon = painterResource(Res.drawable.ic_launcher_pure)
+
     if (isTraySupported) {
         Tray(
-            icon = rememberVectorPainter(Icons.Rounded.RssFeed),
+            icon = appIcon,
             tooltip = "ReadYou",
             menu = {
                 Item(
@@ -99,6 +104,7 @@ fun main() = application {
         visible = isWindowVisible,
         state = windowState,
         title = "ReadYou",
+        icon = appIcon,
         onKeyEvent = { keyEvent ->
             val mapped = shortcutCoordinator.mapKeyEvent(
                 key = keyEvent.key,

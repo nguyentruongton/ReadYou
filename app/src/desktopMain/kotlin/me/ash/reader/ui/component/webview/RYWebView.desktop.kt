@@ -33,6 +33,7 @@ fun buildDesktopWebViewHtml(
     content: String,
     refererDomain: String?,
     fontSize: Int,
+    fontPath: String? = null,
     lineHeight: Float,
     letterSpacing: Float,
     textMargin: Int,
@@ -54,7 +55,7 @@ fun buildDesktopWebViewHtml(
     WebViewHtml.HTML.format(
         WebViewStyle.get(
             fontSize = fontSize,
-            fontPath = null,
+            fontPath = fontPath,
             lineHeight = lineHeight,
             letterSpacing = letterSpacing,
             textMargin = textMargin,
@@ -107,12 +108,17 @@ actual fun RYWebView(
     val codeBgColor: Int =
         MaterialTheme.colorScheme.surfaceColorAtElevation((tonalElevation.value + 6).dp).toArgb()
     val boldCharacters = LocalReadingBoldCharacters.current
+    val readingFonts = LocalReadingFonts.current
+    val fontPath = remember(readingFonts) {
+        me.ash.reader.ui.theme.PlatformFontLoader.resolveWebViewFontPath(readingFonts)
+    }
 
     val html =
         remember(
             content,
             refererDomain,
             fontSize,
+            fontPath,
             lineHeight,
             letterSpacing,
             textMargin,
@@ -135,6 +141,7 @@ actual fun RYWebView(
                 content = content,
                 refererDomain = refererDomain,
                 fontSize = fontSize,
+                fontPath = fontPath,
                 lineHeight = lineHeight,
                 letterSpacing = letterSpacing,
                 textMargin = textMargin,
