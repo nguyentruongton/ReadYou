@@ -10,6 +10,7 @@ import me.ash.reader.ui.ext.DataStoreKey
 import me.ash.reader.ui.ext.DataStoreKey.Companion.basicFonts
 import me.ash.reader.ui.ext.put
 import me.ash.reader.ui.theme.GoogleSansFontFamily
+import me.ash.reader.ui.theme.PlatformFontLoader
 import me.ash.reader.ui.theme.SystemTypography
 import me.ash.reader.ui.theme.applyFontFamily
 
@@ -32,14 +33,14 @@ sealed class BasicFontsPreference(val value: Int) : Preference() {
         when (this) {
             System -> FontFamily.Default
             GoogleSans -> GoogleSansFontFamily
-            External -> FontFamily.Default
+            External -> PlatformFontLoader.loadBasicFontFamily()
         }
 
     fun asTypography(): Typography =
         when (this) {
             System -> SystemTypography
             GoogleSans -> SystemTypography.applyFontFamily(GoogleSansFontFamily)
-            External -> SystemTypography
+            External -> SystemTypography.applyFontFamily(PlatformFontLoader.loadBasicFontFamily())
         }
 
     companion object {

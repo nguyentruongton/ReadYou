@@ -92,3 +92,23 @@ actual val GoogleSansFontFamily: FontFamily =
         GoogleSansSemiBoldItalic,
         GoogleSansBoldItalic,
     )
+
+actual object PlatformFontLoader {
+    actual fun loadBasicFontFamily(): FontFamily =
+        me.ash.reader.ui.ext.ExternalFonts.loadBasicTypography(me.ash.reader.infrastructure.android.AndroidApp.instance).displayLarge.fontFamily
+            ?: FontFamily.Default
+
+    actual fun loadReadingFontFamily(): FontFamily =
+        me.ash.reader.ui.ext.ExternalFonts.loadReadingTypography(me.ash.reader.infrastructure.android.AndroidApp.instance).displayLarge.fontFamily
+            ?: FontFamily.Default
+
+    actual fun resolveWebViewFontPath(readingFonts: me.ash.reader.infrastructure.preference.ReadingFontsPreference): String? =
+        when (readingFonts) {
+            is me.ash.reader.infrastructure.preference.ReadingFontsPreference.External ->
+                me.ash.reader.ui.ext.ExternalFonts.FontType.ReadingFont.toPath(me.ash.reader.infrastructure.android.AndroidApp.instance)
+            is me.ash.reader.infrastructure.preference.ReadingFontsPreference.GoogleSans ->
+                "/android_res/font/google_sans_flex.ttf"
+            else -> null
+        }
+}
+

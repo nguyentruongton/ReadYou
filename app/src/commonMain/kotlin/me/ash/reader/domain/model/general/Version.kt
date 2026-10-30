@@ -25,6 +25,19 @@ class Version(numbers: List<String>) {
 
     override fun toString() = "$major.$minor.$point"
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Version) return false
+        return major == other.major && minor == other.minor && point == other.point
+    }
+
+    override fun hashCode(): Int {
+        var result = major
+        result = 31 * result + minor
+        result = 31 * result + point
+        return result
+    }
+
     /**
      * Use [major], [minor], [point] for comparison.
      *
