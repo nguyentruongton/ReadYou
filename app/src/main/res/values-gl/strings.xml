@@ -83,7 +83,7 @@
     <string name="agree">Aceptar</string>
     <string name="wallpaper_colors">Cores do fondo de pantalla</string>
     <string name="no_palettes">Sen paletas</string>
-    <string name="only_android_8.1_plus">Só Android 8.1 e superior</string>
+    <string name="only_android_8_1_plus">Só Android 8.1 e superior</string>
     <string name="basic_colors">Cores básicas</string>
     <string name="primary_color">Cor primaria</string>
     <string name="primary_color_hint">Como #666666 ou 666666</string>

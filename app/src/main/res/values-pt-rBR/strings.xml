@@ -89,7 +89,7 @@
     <string name="agree">Concordo</string>
     <string name="wallpaper_colors">Cores do Papel de Parede</string>
     <string name="no_palettes">Sem paletas</string>
-    <string name="only_android_8.1_plus">Apenas Android 8.1+</string>
+    <string name="only_android_8_1_plus">Apenas Android 8.1+</string>
     <string name="basic_colors">Cores Básicas</string>
     <string name="primary_color">Cores primárias</string>
     <string name="primary_color_hint">Como #666666 ou 666666</string>

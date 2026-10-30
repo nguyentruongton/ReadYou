@@ -39,7 +39,7 @@
     <string name="agree">同意する</string>
     <string name="wallpaper_colors">壁紙の色</string>
     <string name="no_palettes">パレットなし</string>
-    <string name="only_android_8.1_plus">Android 8.1 以降のみ</string>
+    <string name="only_android_8_1_plus">Android 8.1 以降のみ</string>
     <string name="basic_colors">基本の色</string>
     <string name="primary_color">メインカラー</string>
     <string name="style">スタイル</string>

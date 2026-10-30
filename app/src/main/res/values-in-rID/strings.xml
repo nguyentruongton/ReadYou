@@ -108,7 +108,7 @@
     <string name="agree">Setuju</string>
     <string name="wallpaper_colors">Warna Wallpaper</string>
     <string name="no_palettes">Tidak ada palet</string>
-    <string name="only_android_8.1_plus">Hanya Android 8.1 keatas</string>
+    <string name="only_android_8_1_plus">Hanya Android 8.1 keatas</string>
     <string name="basic_colors">Warna Dasar</string>
     <string name="primary_color">Warna primer</string>
     <string name="primary_color_hint">Misal #666666 atau 666666</string>

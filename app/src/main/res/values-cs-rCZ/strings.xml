@@ -114,7 +114,7 @@
     <string name="agree">Souhlasím</string>
     <string name="wallpaper_colors">Barvy pozadí</string>
     <string name="no_palettes">Žádné palety</string>
-    <string name="only_android_8.1_plus">Pouze Android 8.1+</string>
+    <string name="only_android_8_1_plus">Pouze Android 8.1+</string>
     <string name="basic_colors">Základní barvy</string>
     <string name="primary_color">Primární barva</string>
     <string name="primary_color_hint">Například #666666 nebo 666666</string>

@@ -120,7 +120,7 @@
     <string name="article_desc">Descrições dos artigos</string>
     <string name="article_images">Imagens</string>
     <string name="no_palettes">Sem paletas</string>
-    <string name="only_android_8.1_plus">Android 8.1+ apenas</string>
+    <string name="only_android_8_1_plus">Android 8.1+ apenas</string>
     <string name="primary_color_hint">Como #666666 ou 666666</string>
     <string name="appearance">Aparência</string>
     <string name="style">Estilo</string>

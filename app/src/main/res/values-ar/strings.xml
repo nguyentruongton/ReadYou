@@ -241,7 +241,7 @@
     <string name="check_failure">فشل التماس التحديثات</string>
     <string name="icons">الأيقونات</string>
     <string name="mark_as_read_seven_days">علِّمه مقروءًا منذ أكثر من ٧ أيَّام</string>
-    <string name="only_android_8.1_plus">فقط أندرويد +8.1</string>
+    <string name="only_android_8_1_plus">فقط أندرويد +8.1</string>
     <string name="browse_tos_tips">تصفَّح <i><u>شروط الخدمة وسياسة الخصوصيَّة</u></i></string>
     <string name="basic_colors">الألوان الأساس</string>
     <string name="reading_fonts">خطوط القراءة</string>

@@ -122,7 +122,7 @@
     <string name="primary_color_hint">Kiểu như #666666 hoặc 666666</string>
     <string name="appearance">Giao diện</string>
     <string name="style">Kiểu</string>
-    <string name="only_android_8.1_plus">Đối với Android 8.1+</string>
+    <string name="only_android_8_1_plus">Đối với Android 8.1+</string>
     <string name="wallpaper_colors">Màu nền</string>
     <string name="no_palettes">Không có bảng màu</string>
     <string name="basic_fonts">Phông chữ</string>

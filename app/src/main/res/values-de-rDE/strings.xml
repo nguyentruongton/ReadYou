@@ -111,7 +111,7 @@
     <string name="agree">Zustimmen</string>
     <string name="wallpaper_colors">Hintergrundfarben</string>
     <string name="no_palettes">Keine Paletten</string>
-    <string name="only_android_8.1_plus">Nur Android 8.1+</string>
+    <string name="only_android_8_1_plus">Nur Android 8.1+</string>
     <string name="basic_colors">Grundfarben</string>
     <string name="primary_color">Primärfarbe</string>
     <string name="primary_color_hint">z.B. #666666 oder 666666</string>

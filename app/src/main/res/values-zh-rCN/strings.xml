@@ -109,7 +109,7 @@
     <string name="agree">同意并继续</string>
     <string name="wallpaper_colors">壁纸颜色</string>
     <string name="no_palettes">无色板</string>
-    <string name="only_android_8.1_plus">仅限 Android 8.1+</string>
+    <string name="only_android_8_1_plus">仅限 Android 8.1+</string>
     <string name="basic_colors">基本颜色</string>
     <string name="primary_color">主色</string>
     <string name="primary_color_hint">例如 #666666 或 666666</string>

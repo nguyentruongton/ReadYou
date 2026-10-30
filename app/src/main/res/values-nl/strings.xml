@@ -196,7 +196,7 @@
     <string name="must_have_an_account">Je moet minimaal 1 account hebben</string>
     <string name="delete_account_toast">Account verwijderd</string>
     <string name="agree">Akkoord</string>
-    <string name="only_android_8.1_plus">Alleen Android 8.1+</string>
+    <string name="only_android_8_1_plus">Alleen Android 8.1+</string>
     <string name="article_date_sticky_header">Sticky publicatiedatumkop</string>
     <string name="group_list">Groepslijst</string>
     <string name="always_expand">Altijd uitbreiden</string>

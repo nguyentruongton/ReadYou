@@ -59,7 +59,7 @@
     <string name="welcome">Добро пожаловать</string>
     <string name="terms_of_service">Условия использования</string>
     <string name="agree">Согласен</string>
-    <string name="only_android_8.1_plus">Только Android 8.1+</string>
+    <string name="only_android_8_1_plus">Только Android 8.1+</string>
     <string name="basic_colors">Основные цвета</string>
     <string name="change_log">Список изменений</string>
     <string name="update">Обновить</string>

@@ -261,7 +261,7 @@
     <string name="submit_bug_report">הגשת דיווח על תקלה ב־GitHub</string>
     <string name="only_link">קישור בלבד</string>
     <string name="export_as_protobuf_file">ייצוא כקובץ protobuf</string>
-    <string name="only_android_8.1_plus">Android 8.1+‎ בלבד</string>
+    <string name="only_android_8_1_plus">Android 8.1+‎ בלבד</string>
     <string name="fill_selected_icon">מילוי סמל המסנן הנוכחי</string>
     <string name="filter_bar">סרגל סינון</string>
     <string name="fever_desc">השימוש הופסק. לא מומלץ.</string>

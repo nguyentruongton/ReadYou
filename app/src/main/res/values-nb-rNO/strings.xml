@@ -99,7 +99,7 @@
     <string name="loading">Laster inn …</string>
     <string name="wallpaper_colors">Bakgrunnsbildefarger</string>
     <string name="no_palettes">Ingen paletter</string>
-    <string name="only_android_8.1_plus">Kun Android 8,1+</string>
+    <string name="only_android_8_1_plus">Kun Android 8,1+</string>
     <string name="flow_page">Flytside</string>
     <string name="reading_page">Leseside</string>
     <string name="open_source_licenses">Frie lisenser</string>

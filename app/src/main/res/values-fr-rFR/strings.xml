@@ -114,7 +114,7 @@
     <string name="agree">J’accepte</string>
     <string name="wallpaper_colors">Couleurs du fond d’écran</string>
     <string name="no_palettes">Aucune palette</string>
-    <string name="only_android_8.1_plus">Android 8.1+ uniquement</string>
+    <string name="only_android_8_1_plus">Android 8.1+ uniquement</string>
     <string name="basic_colors">Couleurs de base</string>
     <string name="primary_color">Couleur primaire</string>
     <string name="primary_color_hint">Par exemple #111111 ou 111111</string>

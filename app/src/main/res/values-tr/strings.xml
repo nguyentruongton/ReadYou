@@ -161,7 +161,7 @@
     <string name="mark_as_starred">Yıldızlı olarak işaretle</string>
     <string name="close">Kapat</string>
     <string name="get_new_updates">Yeni güncellemeleri al</string>
-    <string name="only_android_8.1_plus">Yalnızca Android 8.1+</string>
+    <string name="only_android_8_1_plus">Yalnızca Android 8.1+</string>
     <string name="basic_colors">Temel renkler</string>
     <string name="color_and_style_desc">Tema, renk stili, yazı tipi boyutu</string>
     <string name="interaction">Kullanım</string>

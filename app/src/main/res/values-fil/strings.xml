@@ -72,7 +72,7 @@
     <string name="agree">Sumang-ayon</string>
     <string name="wallpaper_colors">Mga kulay ng wallpaper</string>
     <string name="no_palettes">Walang mga pallete</string>
-    <string name="only_android_8.1_plus">Sa Android 8.1+ lamang</string>
+    <string name="only_android_8_1_plus">Sa Android 8.1+ lamang</string>
     <string name="basic_colors">Mga basic na kulay</string>
     <string name="primary_color">Pangunahing Kulay</string>
     <string name="primary_color_hint">Tulad ng #666666 o 666666</string>
