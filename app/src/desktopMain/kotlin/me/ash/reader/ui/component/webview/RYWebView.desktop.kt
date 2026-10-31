@@ -10,18 +10,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import io.github.kdroidfilter.webview.request.RequestInterceptor
-import io.github.kdroidfilter.webview.request.WebRequest
-import io.github.kdroidfilter.webview.request.WebRequestInterceptResult
-import io.github.kdroidfilter.webview.web.WebView
-import io.github.kdroidfilter.webview.web.WebViewNavigator
-import io.github.kdroidfilter.webview.web.rememberWebViewNavigator
+import io.github.kdroidfilter.webview.web.WebViewFactoryParam
+import io.github.kdroidfilter.webview.web.defaultWebViewFactory
 import io.github.kdroidfilter.webview.web.rememberWebViewStateWithHTMLData
+import io.github.kdroidfilter.webview.wry.WryWebViewPanel
 import java.awt.GraphicsEnvironment
+import javax.swing.JPanel
 import me.ash.reader.infrastructure.preference.*
 import me.ash.reader.ui.component.reader.Reader
 import me.ash.reader.ui.ext.surfaceColorAtElevation
@@ -163,8 +162,9 @@ actual fun RYWebView(
         }
 
     val isHeadless = remember { GraphicsEnvironment.isHeadless() }
+    var webViewError by remember { mutableStateOf(false) }
 
-    if (isHeadless) {
+    if (isHeadless || webViewError) {
         Box(modifier = modifier.fillMaxSize()) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 Reader(
@@ -180,32 +180,40 @@ actual fun RYWebView(
         state.webSettings.backgroundColor = surfaceColor
         state.webSettings.desktopWebSettings.transparent = false
 
-        val requestInterceptor =
-            remember(uriHandler, refererDomain) {
-                object : RequestInterceptor {
-                    override fun onInterceptUrlRequest(
-                        request: WebRequest,
-                        navigator: WebViewNavigator,
-                    ): WebRequestInterceptResult {
-                        val url = request.url
+        SwingPanel(
+            modifier = modifier.fillMaxSize(),
+            factory = {
+                try {
+                    val panel = defaultWebViewFactory(WebViewFactoryParam(state))
+                    panel.background = java.awt.Color(surfaceColor.toArgb(), true)
+                    panel.addNavigateListener { url ->
                         if (
                             (url.startsWith("http://") || url.startsWith("https://")) &&
                                 url != refererDomain
                         ) {
                             uriHandler.openUri(url)
-                            return WebRequestInterceptResult.Reject
+                            false
+                        } else {
+                            true
                         }
-                        return WebRequestInterceptResult.Allow
                     }
+                    panel.loadHtml(html)
+                    panel
+                } catch (e: Throwable) {
+                    println("Failed to initialize Desktop WebView, falling back to Native Reader: ${e.message}")
+                    webViewError = true
+                    JPanel()
                 }
-            }
-
-        val navigator = rememberWebViewNavigator(requestInterceptor = requestInterceptor)
-
-        WebView(
-            state = state,
-            modifier = modifier.fillMaxSize(),
-            navigator = navigator,
+            },
+            update = { panel ->
+                try {
+                    if (panel is WryWebViewPanel) {
+                        panel.loadHtml(html)
+                    }
+                } catch (e: Throwable) {
+                    println("Failed to update Desktop WebView HTML: ${e.message}")
+                }
+            },
         )
     }
 }

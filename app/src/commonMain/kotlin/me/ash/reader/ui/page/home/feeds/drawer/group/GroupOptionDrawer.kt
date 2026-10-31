@@ -48,8 +48,9 @@ fun GroupOptionDrawer(
     viewModel: GroupOptionViewModel = koinViewModel(),
     content: @Composable () -> Unit = {},
 ) {
-        val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
     val groupOptionUiState = viewModel.groupOptionUiState.collectAsStateValue()
+    val currentRssService = viewModel.rssService.flow().collectAsStateValue()
     val group = groupOptionUiState.group
     val toastString = stringResource(Res.string.rename_toast, groupOptionUiState.newName)
 
@@ -76,7 +77,7 @@ fun GroupOptionDrawer(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         modifier = Modifier.alphaIndicationClickable() {
-                            if (viewModel.rssService.get().updateSubscription) {
+                            if (currentRssService.updateSubscription) {
                                 viewModel.showRenameDialog()
                             }
                         },
@@ -107,9 +108,9 @@ fun GroupOptionDrawer(
                     Subtitle(text = stringResource(Res.string.preset))
 
                     Spacer(modifier = Modifier.height(10.dp))
-                    Preset(viewModel, group)
+                    Preset(viewModel, group, currentRssService.deleteSubscription)
 
-                    if (viewModel.rssService.get().moveSubscription && groupOptionUiState.groups.size != 1) {
+                    if (currentRssService.moveSubscription && groupOptionUiState.groups.size != 1) {
                         Spacer(modifier = Modifier.height(26.dp))
                         Subtitle(text = stringResource(Res.string.move_to_group))
                         Spacer(modifier = Modifier.height(10.dp))
@@ -169,6 +170,7 @@ fun GroupOptionDrawer(
 private fun Preset(
     viewModel: GroupOptionViewModel,
     group: Group?,
+    canDeleteSubscription: Boolean,
 ) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
@@ -229,7 +231,7 @@ private fun Preset(
         ) {
             viewModel.showClearDialog()
         }
-        if (viewModel.rssService.get().deleteSubscription && group?.id != group?.accountId?.getDefaultGroupId()) {
+        if (canDeleteSubscription && group?.id != group?.accountId?.getDefaultGroupId()) {
             RYSelectionChip(
                 modifier = Modifier,
                 content = stringResource(Res.string.delete_group),

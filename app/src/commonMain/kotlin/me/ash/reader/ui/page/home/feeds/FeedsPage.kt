@@ -127,6 +127,7 @@ fun FeedsPage(
 
     val isSyncing = feedsViewModel.isSyncing.collectAsStateValue()
     val syncingState = rememberPullToRefreshState()
+    val currentRssService = subscribeViewModel.rssService.flow().collectAsStateValue()
     val doSync: () -> Unit = {
         scope.launch { feedsViewModel.sync() }
     }
@@ -192,7 +193,7 @@ fun FeedsPage(
                     }
                 },
                 actions = {
-                    if (subscribeViewModel.rssService.get().addSubscription) {
+                    if (currentRssService.addSubscription) {
                         FeedbackIconButton(
                             imageVector = Icons.Rounded.Add,
                             contentDescription = stringResource(Res.string.subscribe),

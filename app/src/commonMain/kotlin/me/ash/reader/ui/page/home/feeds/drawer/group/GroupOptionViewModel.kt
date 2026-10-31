@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,8 +30,10 @@ class GroupOptionViewModel(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            rssService.get().pullGroups().collect { groups ->
-                _groupOptionUiState.update { it.copy(groups = groups) }
+            rssService.flow().collectLatest { service ->
+                service.pullGroups().collect { groups ->
+                    _groupOptionUiState.update { it.copy(groups = groups) }
+                }
             }
         }
     }

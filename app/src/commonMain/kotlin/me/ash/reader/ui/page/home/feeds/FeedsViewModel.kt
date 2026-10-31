@@ -62,8 +62,12 @@ class FeedsViewModel(
 
     init {
         viewModelScope.launch {
-            filterStateFlow.collect {
-                pullImportant(it.filter)
+            filterStateFlow.combine(accountService.currentAccountFlow) { filterState, account ->
+                if (account != null) filterState.filter else null
+            }.collect { filter ->
+                if (filter != null) {
+                    pullImportant(filter)
+                }
             }
         }
         viewModelScope.launch {

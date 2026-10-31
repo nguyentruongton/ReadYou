@@ -43,8 +43,10 @@ class SubscribeViewModel(
 
     init {
         viewModelScope.launch {
-            accountService.currentAccountFlow.collectLatest {
-                rssService.get().pullGroups().collect { groupsFlow.value = it }
+            accountService.currentAccountFlow.collectLatest { account ->
+                if (account != null) {
+                    rssService.get(account.type.id).pullGroups().collect { groupsFlow.value = it }
+                }
             }
         }
         viewModelScope.launch {

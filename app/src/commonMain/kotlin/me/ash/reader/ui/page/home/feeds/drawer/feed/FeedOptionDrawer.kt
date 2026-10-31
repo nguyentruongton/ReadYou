@@ -53,6 +53,7 @@ fun FeedOptionDrawer(
     val openLinkSpecificBrowser = LocalOpenLinkSpecificBrowser.current
     val scope = rememberCoroutineScope()
     val feedOptionUiState = feedOptionViewModel.feedOptionUiState.collectAsStateValue()
+    val currentRssService = feedOptionViewModel.rssService.flow().collectAsStateValue()
     val feed = feedOptionUiState.feed
     val toastString = stringResource(Res.string.rename_toast, feedOptionUiState.newName)
 
@@ -78,7 +79,7 @@ fun FeedOptionDrawer(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         modifier = Modifier.alphaIndicationClickable {
-                            if (feedOptionViewModel.rssService.get().updateSubscription) {
+                            if (currentRssService.updateSubscription) {
                                 feedOptionViewModel.showRenameDialog()
                             }
                         },
@@ -98,8 +99,8 @@ fun FeedOptionDrawer(
                     selectedParseFullContentPreset = feedOptionUiState.feed?.isFullContent ?: false,
                     selectedOpenInBrowserPreset = feedOptionUiState.feed?.isBrowser ?: false,
                     isMoveToGroup = true,
-                    showGroup = feedOptionViewModel.rssService.get().moveSubscription,
-                    showUnsubscribe = feedOptionViewModel.rssService.get().deleteSubscription,
+                    showGroup = currentRssService.moveSubscription,
+                    showUnsubscribe = currentRssService.deleteSubscription,
                     notSubscribeMode = true,
                     selectedGroupId = feedOptionUiState.feed?.groupId ?: "",
                     allowNotificationPresetOnClick = {
@@ -127,7 +128,7 @@ fun FeedOptionDrawer(
                         openPlatformUrl(feed?.url)
                     },
                     onFeedUrlLongClick = {
-                        if (feedOptionViewModel.rssService.get().updateSubscription) {
+                        if (currentRssService.updateSubscription) {
                             
                             feedOptionViewModel.showFeedUrlDialog()
                         }

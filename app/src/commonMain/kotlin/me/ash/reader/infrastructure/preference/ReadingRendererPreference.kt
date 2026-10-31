@@ -26,7 +26,9 @@ sealed class ReadingRendererPreference(val value: Int) : Preference() {
 
     companion object {
 
-        val default = WebView
+        val default: ReadingRendererPreference
+            get() = if (me.ash.reader.ui.component.webview.isEmbeddedNativeWebView) NativeComponent else WebView
+
         val values = listOf(WebView, NativeComponent)
 
         fun fromPreferences(preferences: Preferences) =

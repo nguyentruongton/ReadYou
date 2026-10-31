@@ -65,9 +65,10 @@ class ArticlePagingListUseCase(
         applicationScope.launch(ioDispatcher) {
             filterStateUseCase.filterStateFlow
                 .combine(accountService.currentAccountIdFlow) { filterState, accountId ->
-                    filterState
+                    if (accountId != null) filterState else null
                 }
                 .collect { filterState ->
+                    if (filterState == null) return@collect
                     val searchContent = filterState.searchContent
 
                     mutablePagerFlow.value =

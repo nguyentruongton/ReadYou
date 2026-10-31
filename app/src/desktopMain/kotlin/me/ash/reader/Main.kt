@@ -32,9 +32,17 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import me.ash.reader.domain.service.AccountService
+import me.ash.reader.domain.service.RssService
+import me.ash.reader.infrastructure.di.APPLICATION_SCOPE
+import me.ash.reader.infrastructure.di.IO_DISPATCHER
 import me.ash.reader.infrastructure.di.commonModule
 import me.ash.reader.infrastructure.di.platformModule
+import org.koin.core.qualifier.named
 import me.ash.reader.infrastructure.platform.DesktopShortcutCoordinator
 import me.ash.reader.infrastructure.platform.DesktopShortcutEvent
 import me.ash.reader.infrastructure.platform.LocalDesktopShortcutCoordinator
@@ -49,7 +57,7 @@ import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 
 @OptIn(coil3.annotation.DelicateCoilApi::class)
-fun main() = application {
+fun main() {
     if (GlobalContext.getOrNull() == null) {
         startKoin {
             modules(commonModule, platformModule)
@@ -62,10 +70,26 @@ fun main() = application {
 
     val settingsProvider = koin.get<SettingsProvider>()
     val accountService = koin.get<AccountService>()
+    val rssService = koin.get<RssService>()
     val shortcutCoordinator = koin.get<DesktopShortcutCoordinator>()
     val syncScheduler = koin.get<SyncScheduler>()
+    val applicationScope = koin.get<CoroutineScope>(named(APPLICATION_SCOPE))
+    val ioDispatcher = koin.get<CoroutineDispatcher>(named(IO_DISPATCHER))
 
-    var isWindowVisible by remember { mutableStateOf(true) }
+    runBlocking(ioDispatcher) {
+        if (accountService.isNoAccount()) {
+            accountService.initWithDefaultAccount()
+            applicationScope.launch(ioDispatcher) {
+                rssService.get().doSyncOneTime(accountService.getCurrentAccountId())
+            }
+        }
+    }
+    applicationScope.launch(ioDispatcher) {
+        rssService.get().initSync()
+    }
+
+    application {
+        var isWindowVisible by remember { mutableStateOf(true) }
     val windowState = rememberWindowState(size = DpSize(1200.dp, 800.dp))
 
     val appIcon = painterResource(Res.drawable.ic_launcher_pure)
@@ -210,5 +234,6 @@ fun main() = application {
                 }
             }
         }
+    }
     }
 }
