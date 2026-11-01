@@ -23,7 +23,12 @@ actual val platformModule: Module = module {
         createOkHttpClient(get(), "ReadYou/0.16.2(47)")
     }
     single<ImageLoader> {
-        ImageLoaderFactory.create(PlatformContext.INSTANCE, get(), get<AppPaths>().cacheDir)
+        ImageLoaderFactory.create(
+            context = PlatformContext.INSTANCE,
+            okHttpClient = get(),
+            cacheDir = get<AppPaths>().cacheDir,
+            maxMemoryCacheBytes = 64L * 1024 * 1024,
+        )
     }
     single<me.ash.reader.infrastructure.platform.SyncScheduler> {
         val scope = this

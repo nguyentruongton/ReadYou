@@ -17,6 +17,7 @@ object ImageLoaderFactory {
         context: PlatformContext,
         okHttpClient: OkHttpClient,
         cacheDir: File? = null,
+        maxMemoryCacheBytes: Long? = null,
         extraComponents: (ComponentRegistry.Builder.() -> Unit)? = null,
     ): ImageLoader {
         return ImageLoader.Builder(context)
@@ -28,7 +29,13 @@ object ImageLoaderFactory {
             }
             .memoryCache {
                 MemoryCache.Builder()
-                    .maxSizePercent(context, 0.25)
+                    .apply {
+                        if (maxMemoryCacheBytes != null) {
+                            maxSizeBytes(maxMemoryCacheBytes)
+                        } else {
+                            maxSizePercent(context, 0.25)
+                        }
+                    }
                     .build()
             }
             .apply {
