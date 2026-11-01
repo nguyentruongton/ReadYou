@@ -195,6 +195,14 @@ compose.desktop {
     application {
         mainClass = "me.ash.reader.MainKt"
 
+        jvmArgs += listOf(
+            "-Xms128m",
+            "-Xmx384m",
+            "-XX:+UseG1GC",
+            "-XX:G1PeriodicGCInterval=10000",
+            "-XX:+UseStringDeduplication",
+        )
+
         buildTypes.release.proguard {
             isEnabled.set(false)
         }
